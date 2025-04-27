@@ -1,43 +1,58 @@
-import { Section, Cell, Image, List } from '@telegram-apps/telegram-ui';
+import { Section, Cell, List } from '@telegram-apps/telegram-ui';
 import type { FC } from 'react';
-
+import { PackSlider } from '@/components/Pack/PackSlider';
 import { Link } from '@/components/Link/Link.tsx';
 import { Page } from '@/components/Page.tsx';
-
-import tonSvg from './ton.svg';
+import { Pack } from '@/components/Pack/Pack';
 
 export const IndexPage: FC = () => {
+  // Демо-паки с временными изображениями
+  const demoPacks: Pack[] = [
+    {
+      id: 'free1',
+      type: 'free',
+      name: 'Стартовый набор',
+      image: 'https://placehold.jp/30/ff1801/ffffff/300x150.png?text=START+PACK' // Красный (Ferrari)
+    },
+    {
+      id: 'prem1',
+      type: 'premium',
+      name: 'Гран-при коллекция',
+      image: 'https://placehold.jp/30/0600ef/ffffff/300x150.png?text=PREMIUM+PACK', // Синий (Mercedes)
+      ownedCount: 2
+    },
+    {
+      id: 'prem2',
+      type: 'premium',
+      name: 'Легендарные болиды',
+      image: 'https://placehold.jp/30/ff8700/000000/300x150.png?text=LEGENDARY+PACK',
+      ownedCount: 1
+    },
+    {
+      id: 'empty1',
+      type: 'empty',
+      name: 'Эксклюзивный сезон',
+      image: 'https://placehold.jp/30/cccccc/999999/300x150.png?text=EMPTY+SLOT' // Серый (заглушка)
+    }
+  ];
+
+  const handleOpenPack = (packId: string) => {
+    console.log('Opening pack:', packId);
+    // Здесь будет навигация на экран открытия
+  };
+
+  const handleBuyPack = (packId: string) => {
+    console.log('Buying pack:', packId);
+    // Здесь будет открытие модалки покупки
+  };
+
   return (
     <Page back={false}>
-      <List>
-        <Section
-          header="Features"
-          footer="You can use these pages to learn more about features, provided by Telegram Mini Apps and other useful projects"
-        >
-          <Link to="/ton-connect">
-            <Cell
-              before={<Image src={tonSvg} style={{ backgroundColor: '#007AFF' }}/>}
-              subtitle="Connect your TON wallet"
-            >
-              TON Connect
-            </Cell>
-          </Link>
-        </Section>
-        <Section
-          header="Application Launch Data"
-          footer="These pages help developer to learn more about current launch information"
-        >
-          <Link to="/init-data">
-            <Cell subtitle="User data, chat information, technical data">Init Data</Cell>
-          </Link>
-          <Link to="/launch-params">
-            <Cell subtitle="Platform identifier, Mini Apps version, etc.">Launch Parameters</Cell>
-          </Link>
-          <Link to="/theme-params">
-            <Cell subtitle="Telegram application palette information">Theme Parameters</Cell>
-          </Link>
-        </Section>
-      </List>
+      <PackSlider 
+        packs={demoPacks}
+        onOpenPack={handleOpenPack}
+        onBuyPack={handleBuyPack}
+      />
     </Page>
   );
 };
