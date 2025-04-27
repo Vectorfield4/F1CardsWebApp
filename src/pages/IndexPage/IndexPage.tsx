@@ -1,7 +1,5 @@
-import { Section, Cell, List } from '@telegram-apps/telegram-ui';
 import type { FC } from 'react';
 import { PackSlider } from '@/components/Pack/PackSlider';
-import { Link } from '@/components/Link/Link.tsx';
 import { Page } from '@/components/Page.tsx';
 import { Pack } from '@/components/Pack/Pack';
 
