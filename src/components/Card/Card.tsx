@@ -21,6 +21,7 @@ const CollectionCard: React.FC<GameCardProps> = ({ name, image, type, rarity }) 
     <div style={{ ...rarityStyles[rarity], padding: '10px', borderRadius: '5px' }}>
       <img src={image} alt={name} style={{ width: '100px', height: '100px' }} />
       <h3>{name}</h3>
+      <p>Type: {type}</p>
       <p>Rarity: {rarity}</p>
     </div>
   );

@@ -1,11 +1,10 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Card, Cell, Section } from '@telegram-apps/telegram-ui';
 import { GameCardProps } from '@/components/Card/Card';
 
 export const UpgradeCardPage: React.FC = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const card: GameCardProps = {
     type: 'car',
