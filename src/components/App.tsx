@@ -17,12 +17,16 @@ export function App() {
       platform={['macos', 'ios'].includes(lp.tgWebAppPlatform) ? 'ios' : 'base'}
     >
       <HashRouter>
-        <Header />
-        <Routes>
-          {routes.map((route) => <Route key={route.path} {...route} />)}
-          <Route path="*" element={<Navigate to="/"/>}/>
-        </Routes>
-        <BottomNav />
+        
+          <Header />
+          <Routes>
+            {routes.map((route) => <Route key={route.path} {...route} />)}
+            <Route path="*" element={<Navigate to="/"/>}/>
+          </Routes>
+          
+          <div style={{ paddingBottom: '75px' }}>
+            <BottomNav />
+          </div>
       </HashRouter>
     </AppRoot>
   );

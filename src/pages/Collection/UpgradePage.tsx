@@ -1,12 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, Cell, Section } from '@telegram-apps/telegram-ui';
-import { GameCardProps } from '@/components/Card/Card';
+import { PlayerCard } from '@/components/Card/Card';
 
 export const UpgradeCardPage: React.FC = () => {
   const { id } = useParams();
 
-  const card: GameCardProps = {
+  const card: PlayerCard = {
     type: 'car',
     name: 'Upgrade card',
     image: 'https://cdn-icons-png.flaticon.com/512/197/197484.png',

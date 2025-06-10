@@ -1,5 +1,11 @@
+html{
+  scrollbar-width: none;
+}
 body {
-  background: var(--tg-theme-secondary-bg-color, white);
+  background: #171717;
   padding: 0;
   margin: 0;
+  font-family: 'Unbounded', sans-serif;
+  color: 'white';
+
 }

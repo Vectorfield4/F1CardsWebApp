@@ -57,14 +57,14 @@ if (import.meta.env.DEV) {
         // data, it is better to take a real one from your application and paste it here. It should
         // look something like this (a correctly encoded URL search params):
         // ```
-        // user=%7B%22id%22%3A279058397%2C%22first_name%22%3A%22Vladislav%22%2C%22last_name%22...
+        // user=%7B%22id%22%3A279058397%2C%22first_name%22%3A%22Filipp%22%2C%22last_name%22...
         // ```
         // But in case you don't really need a valid init data, use this one:
         ['tgWebAppData', new URLSearchParams([
           ['auth_date', (new Date().getTime() / 1000 | 0).toString()],
           ['hash', 'some-hash'],
           ['signature', 'some-signature'],
-          ['user', JSON.stringify({ id: 1, first_name: 'Vladislav' })],
+          ['user', JSON.stringify({ id: 1, first_name: 'FILIPP' })],
         ]).toString()],
         ['tgWebAppVersion', '8.4'],
         ['tgWebAppPlatform', 'tdesktop'],

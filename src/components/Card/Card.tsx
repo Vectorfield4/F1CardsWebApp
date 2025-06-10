@@ -2,14 +2,15 @@ import React from 'react';
 
 export type GameCardRarity = 'common' | 'rare' | 'epic' | 'legendary';
 export type GameCardType = 'car' | 'driver';
-export type GameCardProps = {
+export type PlayerCard = {
   name: string;
   image: string;
   type: GameCardType;
   rarity: GameCardRarity;
+  quantity: number;
 };
 
-const CollectionCard: React.FC<GameCardProps> = ({ name, image, type, rarity }) => {
+const CollectionCard: React.FC<PlayerCard> = ({ name, image, type, rarity, quantity }) => {
   const rarityStyles = {
     common: { border: '1px solid gray' },
     rare: { border: '1px solid blue' },
@@ -18,11 +19,19 @@ const CollectionCard: React.FC<GameCardProps> = ({ name, image, type, rarity }) 
   };
 
   return (
-    <div style={{ ...rarityStyles[rarity], padding: '10px', borderRadius: '5px' }}>
-      <img src={image} alt={name} style={{ width: '100px', height: '100px' }} />
-      <h3>{name}</h3>
-      <p>Type: {type}</p>
-      <p>Rarity: {rarity}</p>
+    <div style={{
+      display: 'flex', 
+      flexDirection: 'column', 
+      gap: '10px' 
+    }}>
+      <div style={{ ...rarityStyles[rarity], padding: '10px', borderRadius: '5px' }}>
+        <img src={image} alt={name} style={{ width: '175px', height: '233px' }} />
+      </div>
+      <p style={{ margin: '0' }}>
+        <span style={{ marginTop: '10px' }}>{name}</span>
+        <br />
+        <span style={{ marginTop: '5px' }}>{quantity}шт.</span>
+      </p>
     </div>
   );
 };

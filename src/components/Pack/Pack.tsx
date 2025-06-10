@@ -1,4 +1,5 @@
 export interface Pack {
+    availableCount: number;
     id: string;
     name: string;
     image?: string;  // undefined для заглушки
