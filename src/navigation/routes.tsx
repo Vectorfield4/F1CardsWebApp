@@ -2,8 +2,6 @@ import type { ComponentType, JSX } from 'react';
 
 import { IndexPage } from '@/pages/IndexPage/IndexPage';
 import { CollectionPage } from '@/pages/Collection/CollectionPage';
-import { ShopPage } from '@/pages/ShopPage/ShopPage';
-import { MarketplacePage } from '@/pages/MarketplacePage/MarketplacePage';
 import { InitDataPage } from '@/pages/InitDataPage';
 
 

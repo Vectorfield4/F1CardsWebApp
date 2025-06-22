@@ -24,10 +24,12 @@ const CollectionCard: React.FC<PlayerCard> = ({ name, image, type, rarity, quant
       flexDirection: 'column', 
       gap: '10px' 
     }}>
-      <div style={{ ...rarityStyles[rarity], padding: '10px', borderRadius: '5px' }}>
+      <div style={{ ...rarityStyles[rarity], padding: '2px', borderRadius: '2px' }}>
         <img src={image} alt={name} style={{ width: '175px', height: '233px' }} />
       </div>
       <p style={{ margin: '0' }}>
+        <span style={{ fontWeight: 'bold' }}>{type}</span>
+        <br />
         <span style={{ marginTop: '10px' }}>{name}</span>
         <br />
         <span style={{ marginTop: '5px' }}>{quantity}шт.</span>

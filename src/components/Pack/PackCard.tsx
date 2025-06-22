@@ -1,8 +1,6 @@
 import { Card, Text, Button, List } from '@telegram-apps/telegram-ui';
 import { Pack } from './Pack';
 import { CardCell } from '@telegram-apps/telegram-ui/dist/components/Blocks/Card/components/CardCell/CardCell';
-import InfoCard from '../Card/info-card';
-
 
 interface PackCardProps {
   pack: Pack;

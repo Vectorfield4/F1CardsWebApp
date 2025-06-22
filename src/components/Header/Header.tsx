@@ -1,5 +1,5 @@
 import { initDataState as _initDataState, useSignal } from '@telegram-apps/sdk-react';
-import { Button, Title, Text, Image } from '@telegram-apps/telegram-ui';
+import { Text, Image } from '@telegram-apps/telegram-ui';
 
 const StatItem = ({ value, color, icon }: { value: string, color: string, icon: string }) => (
     <div style={{

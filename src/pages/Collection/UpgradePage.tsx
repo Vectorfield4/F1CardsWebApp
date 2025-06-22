@@ -11,6 +11,7 @@ export const UpgradeCardPage: React.FC = () => {
     name: 'Upgrade card',
     image: 'https://cdn-icons-png.flaticon.com/512/197/197484.png',
     rarity: 'common',
+    quantity: 1
   };
 
   return (
