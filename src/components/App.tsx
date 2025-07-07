@@ -1,15 +1,47 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Navigate, Route, Routes, HashRouter } from 'react-router-dom';
 import { retrieveLaunchParams, useSignal, isMiniAppDark } from '@telegram-apps/sdk-react';
-import { AppRoot } from '@telegram-apps/telegram-ui';
+import { AppRoot, Spinner } from '@telegram-apps/telegram-ui';
 
 import { routes } from '@/navigation/routes.tsx';
 import { BottomNav } from './BottomNav/BottomNav';
 import { Header } from './Header/Header';
+import { ProtectedRoute } from '@/navigation/ProtectedRoute';
+import { LoginPage } from '@/pages/LoginPage/LoginPage';
+import { authService } from '@/services/authService';
 
 export function App() {
   const lp = useMemo(() => retrieveLaunchParams(), []);
   const isDark = useSignal(isMiniAppDark);
+  const [isAuthReady, setIsAuthReady] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await authService.restoreSession();
+      } catch (error) {
+        console.error('Failed to restore session on startup', error);
+      } finally {
+        setIsAuthReady(true);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  if (!isAuthReady) {
+    return (
+      <AppRoot>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh'
+        }}>
+          <Spinner size="l" />
+        </div>
+      </AppRoot>
+    );
+  }
 
   return (
     <AppRoot
@@ -17,16 +49,21 @@ export function App() {
       platform={['macos', 'ios'].includes(lp.tgWebAppPlatform) ? 'ios' : 'base'}
     >
       <HashRouter>
-        
-          <Header />
-          <Routes>
-            {routes.map((route) => <Route key={route.path} {...route} />)}
-            <Route path="*" element={<Navigate to="/"/>}/>
-          </Routes>
-          
-          <div style={{ paddingBottom: '75px' }}>
-            <BottomNav />
-          </div>
+        <Header />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route element={<ProtectedRoute />}>
+            {routes
+              .filter((route) => route.path !== '/login')
+              .map((route) => (
+                <Route key={route.path} path={route.path} element={<route.Component />} />
+              ))}
+          </Route>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+        <div style={{ paddingBottom: '75px' }}>
+          <BottomNav />
+        </div>
       </HashRouter>
     </AppRoot>
   );

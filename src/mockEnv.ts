@@ -4,6 +4,13 @@ import { mockTelegramEnv, isTMA, emitEvent } from '@telegram-apps/sdk-react';
 // application, import.meta.env.DEV will become false, and the code inside will be tree-shaken,
 // so you will not see it in your final bundle.
 if (import.meta.env.DEV) {
+  const envInitDataRaw = import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW;
+  if(envInitDataRaw) {
+    console.log('✅ DEV MODE: Используем initDataRaw из переменной окружения VITE_TELEGRAM_INIT_DATA_RAW');
+  } else {
+    console.log('⚠️ DEV MODE: VITE_TELEGRAM_INIT_DATA_RAW не найдена. Используем стандартные моковые данные.');
+  }
+
   if (!await isTMA('complete')) {
     const themeParams = {
       accent_text_color: '#6ab2f2',
@@ -60,7 +67,7 @@ if (import.meta.env.DEV) {
         // user=%7B%22id%22%3A279058397%2C%22first_name%22%3A%22Filipp%22%2C%22last_name%22...
         // ```
         // But in case you don't really need a valid init data, use this one:
-        ['tgWebAppData', new URLSearchParams([
+        ['tgWebAppData', envInitDataRaw || new URLSearchParams([
           ['auth_date', (new Date().getTime() / 1000 | 0).toString()],
           ['hash', 'some-hash'],
           ['signature', 'some-signature'],

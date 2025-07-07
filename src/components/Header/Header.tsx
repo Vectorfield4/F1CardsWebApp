@@ -1,5 +1,8 @@
+import { useState, useEffect } from 'react';
 import { initDataState as _initDataState, useSignal } from '@telegram-apps/sdk-react';
 import { Text, Image } from '@telegram-apps/telegram-ui';
+import { authService } from '@/services/authService';
+import { gameStateService } from '@/services/gameStateService';
 
 const StatItem = ({ value, color, icon }: { value: string, color: string, icon: string }) => (
     <div style={{
@@ -21,17 +24,53 @@ const StatItem = ({ value, color, icon }: { value: string, color: string, icon: 
 
 export const Header = () => {
   const initDataState = useSignal(_initDataState);
+  const [currencies, setCurrencies] = useState({ gold: 0, dust: 0 });
 
+  useEffect(() => {
+    loadCurrencies();
+    
+    // Подписываемся на изменения в игровом состоянии
+    const unsubscribe = gameStateService.subscribe(() => {
+      loadCurrencies();
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  const loadCurrencies = () => {
+    const playerDetails = authService.getPlayerDetails();
+    if (playerDetails) {
+      setCurrencies({
+        gold: playerDetails.gold,
+        dust: playerDetails.dust
+      });
+    }
+  };
+
+  // Данные пользователя из Telegram
   const userPhotoUrl = initDataState?.user?.photo_url || '';
   const userName = initDataState?.user?.first_name || 'Username';
   const userId = initDataState?.user?.id || 'unknown';
 
-  const stats = [
-    { value: '2 584', color:'#F2C869', icon: '../assets/icons/gold.svg' },
-    { value: '21 324', color:'white', icon: '../assets/icons/dust.svg' }
-  ];
+  // Форматируем валюты с разделителями тысяч
+  const formatCurrency = (value: number): string => {
+    return value.toLocaleString('ru-RU');
+  };
 
-  
+  const stats = [
+    { 
+      value: formatCurrency(currencies.gold), 
+      color:'#F2C869', 
+      icon: '../assets/icons/gold.svg' 
+    },
+    { 
+      value: formatCurrency(currencies.dust), 
+      color:'white', 
+      icon: '../assets/icons/dust.svg' 
+    }
+  ];
 
   return (
     <div style={{
