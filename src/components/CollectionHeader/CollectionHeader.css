@@ -1,0 +1,13 @@
+.collection-header-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.collection-header-title {
+  margin: 0;
+}
+
+.collection-header-stats {
+  margin: 0;
+} 

@@ -1,0 +1,120 @@
+.player-card-page {
+    padding: 17px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background-color: #000;
+    min-height: 100vh;
+}
+
+.navigation-header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 10px;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: white;
+    background-color: #2C2C2E;
+    padding: 8px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.back-button span {
+    font-size: 1.2rem;
+}
+
+.card-slider {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.slider-arrow {
+    font-size: 3rem;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+}
+
+.card-info {
+    text-align: center;
+    color: white;
+}
+
+.card-info .rarity {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.card-info .name {
+    margin: 5px 0;
+}
+
+.card-info .stock {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #8E8E93;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+}
+
+.action-buttons > a {
+    text-decoration: none;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.sell-button {
+    background-color: #2C2C2E;
+    color: white;
+}
+
+.buy-button {
+    background-color: #2C2C2E;
+    color: white;
+}
+
+.upgrade-button {
+    background-color: #34C759;
+    color: white;
+}
+
+.break-button {
+    background-color: #FF3B30;
+    color: white;
+}
+
+.info-box {
+    background-color: #1C1C1E;
+    padding: 15px;
+    border-radius: 12px;
+    width: 100%;
+    color: white;
+}
+
+.info-box p {
+    margin: 0;
+}
+
+.info-box ul {
+    padding-left: 20px;
+    margin: 10px 0 0 0;
+    font-size: 0.9rem;
+    color: #8E8E93;
+} 

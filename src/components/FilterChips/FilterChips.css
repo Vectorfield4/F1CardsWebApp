@@ -1,0 +1,13 @@
+.filter-chips-container {
+  display: flex;
+  gap: 5px;
+  padding: 0 17px;
+}
+
+.filter-chip-selected {
+  background-color: white !important;
+}
+
+.filter-chip-selected-text {
+  color: #2B2D35;
+} 

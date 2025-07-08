@@ -1,100 +1,56 @@
-import { type FC } from 'react';
-import { Chip } from '@telegram-apps/telegram-ui';
-import CollectionCard, { PlayerCard } from '@/components/Card/Card';
+import { type FC, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Page } from '@/components/Page';
+import { gameStateService, DetailedPlayerCard } from '@/services/gameStateService';
+import { CardGrid } from '@/components/CardGrid/CardGrid';
+import { FilterChips, FilterOption } from '@/components/FilterChips/FilterChips';
+import { CollectionHeader } from '@/components/CollectionHeader/CollectionHeader';
+
+const seasonOptions: FilterOption[] = [
+  { id: '2025', label: 'Сезон-2025' },
+  { id: 'special', label: 'Специальные' },
+  { id: 'historic', label: 'Исторические' },
+];
+
+const cardTypeOptions: FilterOption[] = [
+  { id: 'all', label: 'Все' },
+  { id: 'winners', label: 'Победители' },
+  { id: 'racers', label: 'Гонщики' },
+];
 
 export const CollectionPage: FC = () => {
-  const cards: PlayerCard[] = [
-    {
-      type: 'car',
-      name: 'Monaco Street Circuit',
-      image: 'https://placehold.jp/16/3d4070/ffffff/175x233.jpg?text=TEST%20CARD',
-      rarity: 'rare',
-      quantity: 1
-    },
-    {
-      type: 'car',
-      name: 'Silverstone Circuit',
-      image: 'https://placehold.jp/16/3d4070/ffffff/175x233.jpg?text=TEST%20CARD',
-      rarity: 'common',
-      quantity: 2
-    },
-    {
-      type: 'car',
-      name: 'Circuit de Barcelona-Catalunya',
-      image: 'https://placehold.jp/16/3d4070/ffffff/175x233.jpg?text=TEST%20CARD',
-      rarity: 'epic',
-      quantity: 3
-    },
-    {
-      type: 'car',
-      name: 'Red Bull Ring',
-      image: 'https://placehold.jp/16/3d4070/ffffff/175x233.jpg?text=TEST%20CARD',
-      rarity: 'legendary',
-      quantity: 1
-    },
-    {
-      type: 'car',
-      name: 'Hungaroring',
-      image: 'https://placehold.jp/16/3d4070/ffffff/175x233.jpg?text=TEST%20CARD',
-      rarity: 'rare',
-      quantity: 1
-    },
-    {
-      type: 'driver',
-      name: 'Max Verstappen',
-      image: 'https://placehold.jp/16/3d4070/ffffff/175x233.jpg?text=TEST%20CARD',
-      rarity: 'legendary',
-      quantity: 2
-    },
-    {
-      type: 'driver',
-      name: 'Charles Leclerc',
-      image: 'https://placehold.jp/16/3d4070/ffffff/175x233.jpg?text=TEST%20CARD',
-      rarity: 'epic',
-      quantity: 1
-    },
-    {
-      type: 'driver',
-      name: 'Lewis Hamilton',
-      image: 'https://placehold.jp/16/3d4070/ffffff/175x233.jpg?text=TEST%20CARD',
-      rarity: 'legendary',
-      quantity: 1
-    },
-    {
-      type: 'driver',
-      name: 'George Russell',
-      image: 'https://placehold.jp/16/3d4070/ffffff/175x233.jpg?text=TEST%20CARD',
-      rarity: 'rare',
-      quantity: 1
-    },
-    {
-      type: 'driver',
-      name: 'Carlos Sainz Jr.',
-      image: 'https://placehold.jp/16/3d4070/ffffff/175x233.jpg?text=TEST%20CARD',
-      rarity: 'common',
-      quantity: 2
-    },
-  ];
+  const navigate = useNavigate();
+  const [cards, setCards] = useState<DetailedPlayerCard[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedSeason, setSelectedSeason] = useState<string>('2025');
+  const [selectedCardType, setSelectedCardType] = useState<string>('all');
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        setLoading(true);
+        const detailedCards = await gameStateService.getDetailedPlayerCards();
+        setCards(detailedCards);
+      } catch (err: any) {
+        console.error(err);
+        setError(err.title || 'Не удалось загрузить коллекцию.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCards();
+  }, []);
 
   return (
     <Page back={true}>
       {/* Season chips */}
-      <div style={{
-        display: 'flex',
-        gap: 5,
-        padding: '0 17px'
-      }}>
-        <Chip mode="elevated" style={{ backgroundColor: 'white' }} >
-          <span style={{ color: '#2B2D35' }}>Сезон-2025</span>
-        </Chip>
-        <Chip mode="mono" >
-          Специальные
-        </Chip>
-        <Chip mode="mono" >
-          Исторические
-        </Chip>
-      </div>
+      <FilterChips
+        options={seasonOptions}
+        selectedId={selectedSeason}
+        onSelect={setSelectedSeason}
+      />
 
       {/* Collection container */}
       <div style={{
@@ -104,44 +60,28 @@ export const CollectionPage: FC = () => {
         gap: 20
       }}>
         {/* Collection title with stats */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <h2 style={{ margin: 0 }}>Коллекция "сезон-2025"</h2>
-          <p style={{ margin: 0 }}>Собрано <strong>20 из 96 карт</strong> коллекции</p>
-        </div>
+        <CollectionHeader
+          collectionName="сезон-2025"
+          cardsOwned={cards.length}
+          cardsTotal={96} // TODO: This should probably come from a service
+        />
 
         {/* Card type selector */}
-        <div style={{
-          display: 'flex',
-          gap: 5,
-        }}>
-          <Chip mode="elevated" style={{ backgroundColor: 'white' }} >
-            <span style={{ color: '#2B2D35' }}>Все</span>
-          </Chip>
-          <Chip mode="mono" >
-            Победители
-          </Chip>
-          <Chip mode="mono" >
-            Гонщики
-          </Chip>
-        </div>
+        <FilterChips
+          options={cardTypeOptions}
+          selectedId={selectedCardType}
+          onSelect={setSelectedCardType}
+        />
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
-          gap: '12px',
-          padding: '0px',
-        }}>
-          {cards.map((card) => (
-            <CollectionCard 
-              key={card.name} 
-              name={card.name} 
-              image={card.image}
-              type={card.type} 
-              rarity={card.rarity}
-              quantity={card.quantity}
+        {loading && <p>Загрузка...</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        
+        {!loading && !error && (
+            <CardGrid 
+              cards={cards} 
+              onCardClick={(cardId) => navigate(`/collection/player-card/${cardId}`)} 
             />
-          ))}
-        </div>
+        )}
 
       </div>
 

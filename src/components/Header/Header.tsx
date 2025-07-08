@@ -53,6 +53,7 @@ export const Header = () => {
   const userPhotoUrl = initDataState?.user?.photo_url || '';
   const userName = initDataState?.user?.first_name || 'Username';
   const userId = initDataState?.user?.id || 'unknown';
+  const isSpecialUser = userId.toString() === '672728444';
 
   // Форматируем валюты с разделителями тысяч
   const formatCurrency = (value: number): string => {
@@ -82,7 +83,14 @@ export const Header = () => {
     }}>
       {/* Левая часть */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-        <Image src={userPhotoUrl}></Image>
+        <Image 
+          src={userPhotoUrl}
+          style={isSpecialUser ? { 
+            borderRadius: '50%',
+            border: '3px solid #b9f2ff',
+            boxShadow: '0 0 15px #b9f2ff'
+          } : {}}
+        />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <Text style={{ margin: 0 }}>{userName}</Text>
           <Text>ID: {userId}</Text>

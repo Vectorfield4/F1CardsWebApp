@@ -1,50 +1,39 @@
-import { Card, Text, Button, List } from '@telegram-apps/telegram-ui';
-import { Pack } from './Pack';
-import { CardCell } from '@telegram-apps/telegram-ui/dist/components/Blocks/Card/components/CardCell/CardCell';
+import { ShowcaseViewDto } from './ShowcaseViewDto';
+import { Card, Button } from '@telegram-apps/telegram-ui';
 
 interface PackCardProps {
-  pack: Pack;
-  onOpen?: () => void; // Не для empty-паков
-  onBuy?: () => void;  // Только для empty/premium
+  pack: ShowcaseViewDto;
+  onOpen: (packId: string) => void;
+  onBuy: () => void;
 }
 
-export const PackCard = ({ pack, onOpen, onBuy }: PackCardProps) => (
-  <List>  
-    <Card>
-      {/* Изображение или заглушка */}
-      {pack.image ? (
-        <img 
-          src={pack.image} 
-          alt={pack.name}
-          onClick={pack.type !== 'empty' ? onOpen : undefined}
-          style={{ cursor: pack.type !== 'empty' ? 'pointer' : 'default' }}
-        />
-      ) : (
-        <div style={{ background: '#eee', height: '120px' }} />
-      )}
+export const PackCard = ({ pack, onOpen, onBuy }: PackCardProps) => {
+  const canOpen = pack.count > 0;
 
-      <CardCell readOnly>
-        <Text weight="2">{pack.name}</Text>
-      </CardCell>
-      
-      {pack.type === 'free' && (
-        <Button size="s" stretched onClick={onOpen}>
-          Получить
-        </Button>
-      )}
-
-      {pack.type === 'premium' && pack.ownedCount && (
-        <Button size="s" stretched onClick={onBuy}>
-          Купить ещё (осталось: {pack.ownedCount})
-        </Button>
-      )}
-
-      {pack.type === 'empty' && (
-        <Button size="s" stretched onClick={onBuy}>
-          Купить
-        </Button>
-      )}
+  return (
+    <Card style={{ padding: '1rem', textAlign: 'center' }}>
+      <img
+        src={pack.imageUrl || 'https://via.placeholder.com/150'}
+        alt={pack.name}
+        style={{
+          width: '100%',
+          height: 'auto',
+          borderRadius: '8px',
+          cursor: canOpen ? 'pointer' : 'default',
+          opacity: canOpen ? 1 : 0.5,
+        }}
+        onClick={() => canOpen && onOpen(pack.cardSetId.toString())}
+      />
+      <h3 style={{ marginTop: '1rem' }}>{pack.name}</h3>
+      <p>В наличии: {pack.count}</p>
+      <Button
+        size="m"
+        stretched
+        onClick={onBuy}
+        style={{ marginTop: '1rem' }}
+      >
+        Купить
+      </Button>
     </Card>
-    
-  </List>
-);
+  );
+};

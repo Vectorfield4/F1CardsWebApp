@@ -8,9 +8,10 @@ export type PlayerCard = {
   type: GameCardType;
   rarity: GameCardRarity;
   quantity: number;
+  onClick?: () => void;
 };
 
-const CollectionCard: React.FC<PlayerCard> = ({ name, image, type, rarity, quantity }) => {
+const CollectionCard: React.FC<PlayerCard> = ({ name, image, type, rarity, quantity, onClick }) => {
   const rarityStyles = {
     common: { border: '1px solid gray' },
     rare: { border: '1px solid blue' },
@@ -19,7 +20,8 @@ const CollectionCard: React.FC<PlayerCard> = ({ name, image, type, rarity, quant
   };
 
   return (
-    <div style={{
+    <div onClick={onClick} style={{
+      cursor: onClick ? 'pointer' : 'default',
       display: 'flex', 
       flexDirection: 'column', 
       gap: '10px' 

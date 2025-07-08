@@ -1,40 +1,96 @@
-import { Section, Card } from '@telegram-apps/telegram-ui';
-import type { FC } from 'react';
-import { Page } from '@/components/Page.tsx';
-import React from 'react';
-import { CardChip } from '@telegram-apps/telegram-ui/dist/components/Blocks/Card/components/CardChip/CardChip';
-import { CardCell } from '@telegram-apps/telegram-ui/dist/components/Blocks/Card/components/CardCell/CardCell';
+import { FC, useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Page } from '@/components/Page';
+import CollectionCard, { GameCardRarity, GameCardType } from '@/components/Card/Card';
+import { gameStateService, PackOpeningResult, Card } from '@/services/gameStateService';
+import { Spinner, Text, Button } from '@telegram-apps/telegram-ui';
 
+const OpenPackPage: FC = () => {
+  const { packId } = useParams<{ packId: string }>();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<PackOpeningResult | null>(null);
 
-export const UnpackingPage: FC = () => {
+  useEffect(() => {
+    if (packId) {
+      handleOpenPack();
+    } else {
+      setError('ID набора не найден');
+      setIsLoading(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [packId]);
+
+  const handleOpenPack = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const packOpeningResult = await gameStateService.openPack(parseInt(packId!));
+      setResult(packOpeningResult);
+    } catch (err: any) {
+      setError(err.message || 'Произошла ошибка при открытии набора');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleBackToCollection = () => {
+    navigate('/collection');
+  };
+
+  if (isLoading) {
+    return (
+      <Page>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', gap: '1rem' }}>
+          <Spinner size="l" />
+          <Text>Открываем набор...</Text>
+        </div>
+      </Page>
+    );
+  }
+
+  if (error) {
+    return (
+      <Page>
+        <div style={{ padding: '1rem', textAlign: 'center' }}>
+          <Text weight="1">{error}</Text>
+          <Button size="l" stretched style={{ marginTop: '1rem' }} onClick={handleOpenPack}>Попробовать снова</Button>
+          <Button size="l" stretched mode="gray" style={{ marginTop: '0.5rem' }} onClick={handleBackToCollection}>Вернуться в коллекцию</Button>
+        </div>
+      </Page>
+    );
+  }
+
   return (
-    <Page back={false}>
+    <Page>
+      <div style={{ padding: '1rem' }}>
+        <Text weight="1" style={{ textAlign: 'center', marginBottom: '1rem' }}>Поздравляем! Вот ваши новые карты:</Text>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
+          {result?.cards.map((card: Card) => {
+            // Временное сопоставление ID с типами и редкостями.
+            // В будущем это должно приходить с бэкенда или быть в отдельном справочнике.
+            const rarityMap: { [key: number]: GameCardRarity } = { 1: 'common', 2: 'rare', 3: 'epic', 4: 'legendary' };
+            const typeMap: { [key: number]: GameCardType } = { 1: 'driver', 2: 'car' };
 
-        <Section
-          header="Распаковка"
-          footer="Отсюда можно перейти в любой экран"
-        >
-          <Card type="plain">
-                <React.Fragment key=".0">
-                    <CardChip readOnly>
-                        Hot place
-                    </CardChip>
-                    <img
-                        alt="Dog"
-                        src="https://i.imgur.com/892vhef.jpeg"
-                        style={{
-                            display: 'block',
-                            height: 308,
-                            objectFit: 'cover',
-                            width: 254
-                        }}
-                    />
-                    <CardCell readOnly subtitle="United states"> New York </CardCell>
-                </React.Fragment>
-            </Card>
-
-        </Section>
-
+            return (
+              <CollectionCard
+                key={card.id}
+                name={card.name}
+                image={card.imageUrl || ''}
+                type={typeMap[card.cardTypeId] || 'car'}
+                rarity={rarityMap[card.rarityId] || 'common'}
+                quantity={1}
+              />
+            );
+          })}
+        </div>
+        <Button size="l" stretched style={{ marginTop: '1rem' }} onClick={handleBackToCollection}>
+          Отлично!
+        </Button>
+      </div>
     </Page>
   );
 };
+
+export default OpenPackPage;

@@ -1,12 +1,12 @@
-import { Pack } from './Pack';
-import { useState } from 'react';
+import { ShowcaseViewDto } from './ShowcaseViewDto';
+import { useState, useEffect } from 'react';
 import InfoCard from '../Card/info-card';
 
 
 export interface PackSliderProps {
-  packs: Pack[];
+  packs: ShowcaseViewDto[];
   onOpenPack: (packId: string) => void;
-  onBuyPack: (packId: string) => void;
+  onBuyPack: () => void;
 }
 
 export const Rings = () => <div id="rings" style={{ 
@@ -41,6 +41,7 @@ export const PackSlider = ({ packs, onOpenPack, onBuyPack }: PackSliderProps) =>
   };
 
   const currentPack = packs[currentIndex];
+  const canOpenPack = currentPack.count > 0;
 
   const arrowStyles: React.CSSProperties = {
   position: 'absolute' as const,
@@ -84,12 +85,15 @@ return (
         />
 
         <img 
-          src={currentPack.image} 
+          src={currentPack.imageUrl} 
           alt={currentPack.name} 
           width={'231px'}
           height={'277px'}
-          style={{ objectFit: 'cover' }}
-          onClick={currentPack.type !== 'empty' ? () => onOpenPack(currentPack.id) : undefined}
+          style={{ 
+            objectFit: 'cover',
+            cursor: canOpenPack ? 'pointer' : 'default',
+          }}
+          onClick={canOpenPack ? () => onOpenPack(currentPack.cardSetId.toString()) : undefined}
         />
 
         <img src='../assets/icons/RArrow.svg'
@@ -108,8 +112,16 @@ return (
 
       <div style={{ textAlign: 'center', position: 'absolute', bottom: '10px', width: '100%' }}>
         <h2 style={{ marginBottom: '8px' }}>{currentPack.name}</h2>
-        <span>В наличии: {currentPack.availableCount ?? 1}шт. </span>
-        <span style={{ color: '#F2C869' }} onClick={currentPack.type !== 'empty' ? () => onBuyPack(currentPack.id) : undefined}>Купить больше →</span>
+        {currentPack.count > 0 ? (
+          <span>В наличии: {currentPack.count}шт.</span>
+        ) : (
+          <span 
+            style={{ color: '#F2C869', cursor: 'pointer' }}
+            onClick={onBuyPack}
+          >
+            Перейти в магазин →
+          </span>
+        )}
       </div>
 
     </div>
