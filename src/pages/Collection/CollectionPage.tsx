@@ -2,7 +2,7 @@ import { type FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Page } from '@/components/Page';
 
-import { FilterChips, FilterOption } from '@/components/FilterChips/FilterChips';
+import { FilterChips, FilterOption } from '@/pages/Collection/FilterChips/FilterChips';
 import { CollectionHeader } from '@/pages/Collection/CollectionHeader/CollectionHeader';
 import { useQuery } from '@apollo/client';
 import { GET_COLLECTION_DISPLAY_DATA, CollectionCard } from '@/services/queries';

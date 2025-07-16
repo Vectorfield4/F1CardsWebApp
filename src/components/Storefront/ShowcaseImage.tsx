@@ -1,18 +1,14 @@
 import React from 'react';
+import type { MainScreenShowcaseItem } from '@/services/queries';
 
-interface CardSet {
-  id: string;
-  name: string;
-}
-
-interface PackCardProps {
-  cardSet: CardSet;
-  isOwned: boolean;
+interface ShowcaseImageProps {
+  showcase: MainScreenShowcaseItem;
   onOpenPack?: (packId: string) => void;
   onBuyPack?: () => void;
 }
 
-export const PackCard: React.FC<PackCardProps> = ({ cardSet, isOwned, onOpenPack, onBuyPack }) => {
+export const ShowcaseImage: React.FC<ShowcaseImageProps> = ({ showcase, onOpenPack, onBuyPack }) => {
+  const { cardSet, isOwned } = showcase;
   const handleClick = () => {
     if (isOwned && onOpenPack) onOpenPack(cardSet.id);
     if (!isOwned && onBuyPack) onBuyPack();
@@ -44,4 +40,4 @@ export const PackCard: React.FC<PackCardProps> = ({ cardSet, isOwned, onOpenPack
       )}
     </div>
   );
-};
+}; 

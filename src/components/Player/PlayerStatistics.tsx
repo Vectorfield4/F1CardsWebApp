@@ -1,35 +1,9 @@
 import { BarChart2 } from 'lucide-react';
+import { useStatsStore } from '@/store/statsStore';
+import { InfoLine } from '@/components/InfoLine';
 
-export const InfoLine = ({ 
-  label, 
-  value, 
-  icon 
-}: { 
-  label: string, 
-  value: number|string, 
-  icon: React.ReactNode 
-}) => (
-  <div style={{ 
-    display: 'flex', 
-    justifyContent: 'space-between', 
-    paddingTop: '16px', 
-    marginBottom: '0 0', 
-    borderTop: '1px solid #444' 
-  }}>
-    <div style={{ 
-      flex: 1, 
-      display: 'flex', 
-      alignItems: 'center', 
-      gap: '8px' 
-    }}>
-      {icon}
-      {label}
-    </div>
-    <div style={{ textAlign: 'right', fontWeight: 'bold' }}>{value}</div>
-  </div>
-);
-
-export default function PlayerStatistics({ stats }: { stats: { type: string; value: string }[] }) {
+export function PlayerStatistics() {
+  const { stats } = useStatsStore();
   return (
     <div style={{ 
       margin: '24px', 
@@ -59,4 +33,4 @@ export default function PlayerStatistics({ stats }: { stats: { type: string; val
       </div>
     </div>
   );
-}
+} 

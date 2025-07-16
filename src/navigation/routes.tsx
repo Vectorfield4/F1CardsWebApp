@@ -1,15 +1,15 @@
 import type { ComponentType, JSX } from 'react';
 
-import { IndexPage } from '@/pages/IndexPage/IndexPage';
+import { IndexPage } from '@/pages/Index/IndexPage';
 import { CollectionPage } from '@/pages/Collection/CollectionPage';
 import { InitDataPage } from '@/pages/InitDataPage';
 import OpenPackPage from '@/pages/Collection/OpenPackPage';
 import { PlayerCardPage } from '@/pages/Collection/PlayerCardPage';
 import { UpgradeCardPage } from '@/pages/Collection/UpgradePage';
 // Заглушки для новых страниц
-import PremiumShopPage from '../pages/PremiumShopPage';
-import PackPage from '../pages/PackPage';
-import PackPurchaseResultPage from '../pages/PackPurchaseResultPage';
+import PremiumShopPage from '../pages/ShopPage/PremiumShopPage';
+import PackPage from '../pages/Packs/PackPage';
+import PackPurchaseResultPage from '../pages/ShopPage/PackPurchaseResultPage';
 
 
 interface Route {

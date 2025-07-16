@@ -172,6 +172,6 @@ This document provides a comprehensive guide to TypeScript React (.tsx) best pra
 
 By following these best practices and coding standards, developers can write TypeScript React code that is maintainable, performant, secure, and reliable.
 description:
-globs:
+globs: *.tsx
 alwaysApply: false
 ---
