@@ -12,6 +12,26 @@ export interface ShowcaseSliderProps {
   onBuyPack: () => void;
 }
 
+const styles = {
+  showcaseSlider: {
+    position: 'relative' as const,
+    overflow: 'hidden',
+    isolation: 'isolate' as const,
+    minHeight: '400px',
+    color: 'white',
+  },
+  showcaseSliderContent: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '400px',
+    width: '100%',
+    overflow: 'hidden',
+    zIndex: 5,
+    paddingBottom: '16px',
+  },
+};
+
 export const ShowcaseSlider = ({ onOpenPack, onBuyPack }: ShowcaseSliderProps) => {
   const { showcases } = useShowcaseStore();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -28,26 +48,8 @@ export const ShowcaseSlider = ({ onOpenPack, onBuyPack }: ShowcaseSliderProps) =
   };
 
   const currentShowcase = showcases[currentIndex];
-
-  const styles = {
-    showcaseSlider: {
-      position: 'relative' as const,
-      overflow: 'hidden',
-      isolation: 'isolate' as const,
-      minHeight: '400px',
-      color: 'white',
-    },
-    showcaseSliderContent: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '400px',
-      width: '100%',
-      overflow: 'hidden',
-      zIndex: 5,
-      paddingBottom: '16px',
-    },
-  };
+  if (!currentShowcase)
+    return <StorefrontClosed />;
 
   return (
     <div id='showcaseSlider' style={styles.showcaseSlider}>
@@ -56,13 +58,11 @@ export const ShowcaseSlider = ({ onOpenPack, onBuyPack }: ShowcaseSliderProps) =
 
       <div style={styles.showcaseSliderContent}>
         <ArrowButton direction="left" onClick={goPrev} />
-
         <ShowcaseImage
           showcase={currentShowcase}
           onOpenPack={onOpenPack}
           onBuyPack={onBuyPack}
         />
-
         <ArrowButton direction="right" onClick={goNext} />
       </div>
 
