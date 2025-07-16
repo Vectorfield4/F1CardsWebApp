@@ -1,13 +1,9 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { hideBackButton, onBackButtonClick, showBackButton } from '@telegram-apps/sdk-react';
-import { type PropsWithChildren, useEffect } from 'react';
+import { DefaultScreenProps } from './ScreenProps';
 
-export function Page({ children, back = true }: PropsWithChildren<{
-  /**
-   * True if it is allowed to go back from this page.
-   */
-  back?: boolean
-}>) {
+export function Screen({ children, back = true }: DefaultScreenProps) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,3 +18,4 @@ export function Page({ children, back = true }: PropsWithChildren<{
 
   return <>{children}</>;
 }
+

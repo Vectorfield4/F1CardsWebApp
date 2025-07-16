@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Page } from '@/components/Page';
+import { Screen } from '@/components/Screens/Screen';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_UPGRADE_COST, UPGRADE_CARD, GET_CARD_DISPLAY_DATA, CardDisplayData } from '@/services/queries';
 import { Spinner, Button, Text } from '@telegram-apps/telegram-ui';
@@ -24,8 +24,8 @@ export const UpgradeCardPage: React.FC = () => {
     onCompleted: () => setDone(true)
   });
 
-  if (cardLoading || costLoading) return <Page><Spinner size="l" /></Page>;
-  if (!cardData || !costData) return <Page><Text>Нет данных</Text></Page>;
+  if (cardLoading || costLoading) return <Screen><Spinner size="l" /></Screen>;
+  if (!cardData || !costData) return <Screen><Text>Нет данных</Text></Screen>;
   const card = cardData.getCardDisplayData;
   const cost = costData.getUpgradeDisplayData;
   const maxLevel = 4;
@@ -33,18 +33,18 @@ export const UpgradeCardPage: React.FC = () => {
 
   if (done) {
     return (
-      <Page back={true}>
+      <Screen back={true}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 24 }}>
           <img src={card.previewUrls[0] || ''} alt={card.name} style={{ width: 180, height: 240, borderRadius: 12, boxShadow: '0 0 24px gold' }} />
           <Text weight="2" style={{ fontSize: 20, margin: '16px 0' }}>Карта улучшена до уровня {card.level + 1}</Text>
           <Button size="l" stretched onClick={() => navigate(-1)}>Перейти к карте</Button>
         </div>
-      </Page>
+      </Screen>
     );
   }
 
   return (
-    <Page back={true}>
+    <Screen back={true}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 24 }}>
         <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
           <img src={card.previewUrls[0] || ''} alt={card.name} style={{ width: 120, height: 160, borderRadius: 8 }} />
@@ -70,6 +70,6 @@ export const UpgradeCardPage: React.FC = () => {
               : `Улучшить до уровня ${card.level + 1}`}
         </Button>
       </div>
-    </Page>
+    </Screen>
   );
 };

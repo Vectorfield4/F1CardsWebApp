@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_PACK_DISPLAY_DATA, PackDisplayData } from '@/services/queries';
 import { Spinner, Button, Text } from '@telegram-apps/telegram-ui';
-import { Page } from '@/components/Page';
+import { Screen } from '@/components/Screens/Screen';
 
 const PackPurchaseScreen: React.FC = () => {
   const { packId } = useParams<{ packId: string }>();
@@ -13,8 +13,8 @@ const PackPurchaseScreen: React.FC = () => {
     skip: !packId,
   });
 
-  if (loading) return <Page><Spinner size="l" /></Page>;
-  if (error || !data) return <Page><Text>Ошибка загрузки набора</Text></Page>;
+  if (loading) return <Screen><Spinner size="l" /></Screen>;
+  if (error || !data) return <Screen><Text>Ошибка загрузки набора</Text></Screen>;
 
   const pack = data.getPackDisplayData;
 
@@ -23,7 +23,7 @@ const PackPurchaseScreen: React.FC = () => {
   };
 
   return (
-    <Page back={true}>
+    <Screen back={true}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 24 }}>
         <img src={pack.imageUrl || ''} alt={pack.name} style={{ width: 180, height: 180, borderRadius: 12, marginBottom: 16, background: '#232323' }} />
         <Text weight="2" style={{ fontSize: 20, marginBottom: 8 }}>{pack.name}</Text>
@@ -35,7 +35,7 @@ const PackPurchaseScreen: React.FC = () => {
           Отмена
         </Button>
       </div>
-    </Page>
+    </Screen>
   );
 };
 

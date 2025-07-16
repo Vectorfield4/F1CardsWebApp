@@ -1,12 +1,13 @@
-import { type FC, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Page } from '@/components/Page';
+import { Screen } from '@/components/Screens/Screen';
 
 import { FilterChips, FilterOption } from '@/pages/Collection/FilterChips/FilterChips';
 import { CollectionHeader } from '@/pages/Collection/CollectionHeader/CollectionHeader';
 import { useQuery } from '@apollo/client';
 import { GET_COLLECTION_DISPLAY_DATA, CollectionCard } from '@/services/queries';
-import { CardGrid } from './CardGrid/CardGrid';
+import { CardGrid } from './Collection/CardGrid/CardGrid';
+
 
 const seasonOptions: FilterOption[] = [
   { id: '2025', label: 'Сезон-2025' },
@@ -20,7 +21,7 @@ const cardTypeOptions: FilterOption[] = [
   { id: 'racers', label: 'Гонщики' },
 ];
 
-export const CollectionPage: FC = () => {
+export const CollectionScreen = () => {
   const navigate = useNavigate();
   const [selectedSeason, setSelectedSeason] = useState<string>('2025');
   const [selectedCardType, setSelectedCardType] = useState<string>('all');
@@ -29,7 +30,7 @@ export const CollectionPage: FC = () => {
   const cards = data?.getCollectionDisplayData || [];
 
   return (
-    <Page back={true}>
+    <Screen back={true}>
       {/* Season chips */}
       <FilterChips
         options={seasonOptions}
@@ -67,7 +68,7 @@ export const CollectionPage: FC = () => {
             />
         )}
       </div>
-    </Page>
+    </Screen>
   );
 }
 

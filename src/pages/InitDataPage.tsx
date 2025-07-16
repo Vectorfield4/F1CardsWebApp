@@ -8,7 +8,7 @@ import {
 import { List, Placeholder } from '@telegram-apps/telegram-ui';
 
 import { DisplayData, type DisplayDataRow } from '@/components/DisplayData/DisplayData.tsx';
-import { Page } from '@/components/Page.tsx';
+import { Screen } from '@/components/Screens/Screen';
 
 function getUserRows(user: User): DisplayDataRow[] {
   return Object.entries(user).map(([title, value]) => ({ title, value }));
@@ -55,7 +55,7 @@ export const InitDataPage: FC = () => {
 
   if (!initDataRows) {
     return (
-      <Page>
+      <Screen>
         <Placeholder
           header="Oops"
           description="Application was launched with missing init data"
@@ -66,17 +66,17 @@ export const InitDataPage: FC = () => {
             style={{ display: 'block', width: '144px', height: '144px' }}
           />
         </Placeholder>
-      </Page>
+      </Screen>
     );
   }
   return (
-    <Page>
+    <Screen>
       <List>
         <DisplayData header={'Init Data'} rows={initDataRows}/>
         {userRows && <DisplayData header={'User'} rows={userRows}/>}
         {receiverRows && <DisplayData header={'Receiver'} rows={receiverRows}/>}
         {chatRows && <DisplayData header={'Chat'} rows={chatRows}/>}
       </List>
-    </Page>
+    </Screen>
   );
 };

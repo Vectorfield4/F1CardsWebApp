@@ -1,7 +1,7 @@
 
 import { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { Page } from '@/components/Page';
+import { Screen } from '@/components/Screens/Screen';
 import { useQuery } from '@apollo/client';
 import { GET_CARD_DISPLAY_DATA, CardDisplayData } from '@/services/queries';
 import { Spinner, Button, Text } from '@telegram-apps/telegram-ui';
@@ -14,16 +14,16 @@ export const PlayerCardPage: FC = () => {
     skip: !playerCardId,
   });
 
-  if (loading) return <Page><Spinner size="l" /></Page>;
-  if (error) return <Page><Text>Ошибка: {error.message}</Text></Page>;
-  if (!data) return <Page><Text>Нет данных</Text></Page>;
+  if (loading) return <Screen><Spinner size="l" /></Screen>;
+  if (error) return <Screen><Text>Ошибка: {error.message}</Text></Screen>;
+  if (!data) return <Screen><Text>Нет данных</Text></Screen>;
 
   const card = data.getCardDisplayData;
   const isOwned = card.quantity > 0;
   const image = card.previewUrls[0] || '';
 
   return (
-    <Page back={true}>
+    <Screen back={true}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 16 }}>
         {/* Фото/заглушка */}
         <div style={{ margin: '16px 0' }}>
@@ -76,7 +76,7 @@ export const PlayerCardPage: FC = () => {
           </div>
         )}
       </div>
-    </Page>
+    </Screen>
   );
 };
 

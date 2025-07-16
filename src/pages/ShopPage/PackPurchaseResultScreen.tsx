@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_PACK_PURCHASE_RESULT, PackPurchaseResult } from '@/services/queries';
 import { Spinner, Button, Text } from '@telegram-apps/telegram-ui';
-import { Page } from '@/components/Page';
+import { Screen } from '@/components/Screens/Screen';
 
 const PackPurchaseResultScreen: React.FC = () => {
   const { packId } = useParams<{ packId: string }>();
@@ -13,13 +13,13 @@ const PackPurchaseResultScreen: React.FC = () => {
     skip: !packId,
   });
 
-  if (loading) return <Page><Spinner size="l" /></Page>;
-  if (error || !data) return <Page><Text>Ошибка загрузки результата</Text></Page>;
+  if (loading) return <Screen><Spinner size="l" /></Screen>;
+  if (error || !data) return <Screen><Text>Ошибка загрузки результата</Text></Screen>;
 
   const result = data.getPackPurchaseResultDisplayData;
 
   return (
-    <Page back={true}>
+    <Screen back={true}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 24 }}>
         <img src={''} alt="pack" style={{ width: 180, height: 180, borderRadius: 12, marginBottom: 16, background: '#232323' }} />
         <Text weight="2" style={{ fontSize: 20, marginBottom: 8 }}>
@@ -33,7 +33,7 @@ const PackPurchaseResultScreen: React.FC = () => {
           Вернуться в премиум-магазин
         </Button>
       </div>
-    </Page>
+    </Screen>
   );
 };
 

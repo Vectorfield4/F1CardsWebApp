@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_PACK_DISPLAY_DATA, PackDisplayData } from '@/services/queries';
 import { Spinner, Button, Text } from '@telegram-apps/telegram-ui';
-import { Page } from '@/components/Page';
+import { Screen } from '@/components/Screens/Screen';
 
 const PACK_OPTIONS = [
   { count: 1, priceMultiplier: 1 },
@@ -13,7 +13,7 @@ const PACK_OPTIONS = [
 
 const userGold = 1000; // TODO: получить из профиля игрока
 
-const PackPage: React.FC = () => {
+const PackPage = () => {
   const { packId } = useParams<{ packId: string }>();
   const [selected, setSelected] = useState(0);
 
@@ -22,15 +22,15 @@ const PackPage: React.FC = () => {
     skip: !packId,
   });
 
-  if (loading) return <Page><Spinner size="l" /></Page>;
-  if (error || !data) return <Page><Text>Ошибка загрузки набора</Text></Page>;
+  if (loading) return <Screen><Spinner size="l" /></Screen>;
+  if (error || !data) return <Screen><Text>Ошибка загрузки набора</Text></Screen>;
 
   const pack = data.getPackDisplayData;
   const price = pack.goldPrice * PACK_OPTIONS[selected].priceMultiplier;
   const notEnoughGold = userGold < price;
 
   return (
-    <Page back={true}>
+    <Screen back={true}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 16 }}>
         <img src={pack.imageUrl || ''} alt={pack.name} style={{ width: 220, height: 220, borderRadius: 16, marginBottom: 16 }} />
         <Text weight="2" style={{ fontSize: 22, marginBottom: 8 }}>{pack.name}</Text>
@@ -60,7 +60,7 @@ const PackPage: React.FC = () => {
           <div style={{ color: '#fff', fontSize: 14, marginTop: 8 }}>{pack.description || 'Описание набора...'}</div>
         </div>
       </div>
-    </Page>
+    </Screen>
   );
 };
 

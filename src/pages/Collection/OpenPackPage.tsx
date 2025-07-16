@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Page } from '@/components/Page';
+import { Screen } from '@/components/Screens/Screen';
 import CollectionCard, { GameCardRarity, GameCardType } from '@/components/Card/Card';
 // Удалён импорт gameStateService, PackOpeningResult, Card
 import { Spinner, Text, Button } from '@telegram-apps/telegram-ui';
@@ -42,29 +42,29 @@ const OpenPackPage: FC = () => {
 
   if (isLoading) {
     return (
-      <Page>
+      <Screen>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column', gap: '1rem' }}>
           <Spinner size="l" />
           <Text>Открываем набор...</Text>
         </div>
-      </Page>
+      </Screen>
     );
   }
 
   if (error) {
     return (
-      <Page>
+      <Screen>
         <div style={{ padding: '1rem', textAlign: 'center' }}>
           <Text weight="1">{error}</Text>
           <Button size="l" stretched style={{ marginTop: '1rem' }} onClick={handleOpenPack}>Попробовать снова</Button>
           <Button size="l" stretched mode="gray" style={{ marginTop: '0.5rem' }} onClick={handleBackToCollection}>Вернуться в коллекцию</Button>
         </div>
-      </Page>
+      </Screen>
     );
   }
 
   return (
-    <Page>
+    <Screen>
       <div style={{ padding: '1rem' }}>
         <Text weight="1" style={{ textAlign: 'center', marginBottom: '1rem' }}>Поздравляем! Вот ваши новые карты:</Text>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
@@ -90,7 +90,7 @@ const OpenPackPage: FC = () => {
           Отлично!
         </Button>
       </div>
-    </Page>
+    </Screen>
   );
 };
 

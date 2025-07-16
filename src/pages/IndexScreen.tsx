@@ -1,8 +1,7 @@
 // ВАЖНО: Все типы и структуры данных для GraphQL-запросов и мутаций должны основываться на src/services/queries.ts
 // Это основной источник правды для типов данных Apollo Client в проекте.
-import type { FC } from 'react';
 import { useCallback, useEffect } from 'react';
-import { Page } from '@/components/Page.tsx'; 
+import { Screen } from '@/components/Screens/Screen'; 
 import { Text, Button } from '@telegram-apps/telegram-ui';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,7 +12,7 @@ import { BgBlur100, BgBlur250 } from '@/components/BgBlur';
 import { SpinnerBlock } from '@/components/SpinnerBlock';
 import { ShowcaseSlider } from '@/components/Storefront/ShowcaseSlider';
 
-export const IndexPage: FC = () => {
+export const IndexScreen = () => {
   const { loading, error } = useMainScreenStore();
 
   useEffect(() => {
@@ -22,15 +21,15 @@ export const IndexPage: FC = () => {
 
   if (loading) {
     return (
-      <Page back={false}>
+      <Screen back={false}>
         <SpinnerBlock />
-      </Page>
+      </Screen>
     );
   }
 
   if (error) {
     return (
-      <Page back={false}>
+      <Screen back={false}>
         <div style={{
           margin: '16px',
           padding: '12px',
@@ -45,7 +44,7 @@ export const IndexPage: FC = () => {
             Повторить
           </Button>
         </div>
-      </Page>
+      </Screen>
     );
   }
 
@@ -58,7 +57,7 @@ export const IndexPage: FC = () => {
   }, [navigate]);
 
   return (
-    <Page back={false}>
+    <Screen back={false}>
       <BgBlur100 color1="#D37492" color2="#F64073" color3="#DB3538" blur={50} />
       <BgBlur250 color1="#D37492" color2="#F64073" color3="#DB3538" blur={125} />
       <ShowcaseSlider 
@@ -66,6 +65,6 @@ export const IndexPage: FC = () => {
         onBuyPack={handleBuyPack}
       />
       <PlayerStatistics />
-    </Page>
+    </Screen>
   );
 };
