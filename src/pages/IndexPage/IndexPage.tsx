@@ -1,5 +1,4 @@
 import { Link } from '@/components/Link/Link';
-import './IndexPage.css';
 import { useQuery, ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { GET_MAIN_SCREEN_DISPLAY_DATA, MainScreenDisplayData } from '@/services/queries';
 import { authService } from '@/services/authService';
