@@ -1,5 +1,5 @@
 import { Button, Text } from '@telegram-apps/telegram-ui';
-import { useDebugStore } from '@/store/debugStore';
+import { useLaunchParamsStore } from '@/store/launchParamsStore';
 
 interface ErrorMessageProps {
   error: string;
@@ -32,7 +32,7 @@ const styles = {
 };
 
 export function ErrorMessage({ error, onRetry }: ErrorMessageProps) {
-  const { headers } = useDebugStore();
+  const { headers } = useLaunchParamsStore();
   return (
     <div style={styles.container}>
       <Text style={styles.text}>{error}</Text>

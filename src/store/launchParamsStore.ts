@@ -18,57 +18,59 @@ interface LaunchParamsState {
   initFromTelegram: () => void;
 }
 
-export const useLaunchParamsStore = create<LaunchParamsState>((set) => ({
-  platform: 'base',
-  appearance: 'light',
-  initDataRaw: null,
-  initDataState: null,
-  headers: {},
-  initFromTelegram: () => {
-    let raw = initDataRaw();
-    var headers = import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW 
-      ? { 'Authorization': `tma ${import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW}` } 
-      : { 'Authorization': `tma ${raw}` };
-      
-    let stateRaw = initDataState();
-    let state: InitData | null = null;
-    
-    // Fallback: если нет state, пробуем распарсить raw
-    if ((!stateRaw || !stateRaw.user) && raw) {
-      try {
-        const params = new URLSearchParams(raw);
-        const userStr = params.get('user');
-        const auth_date = params.get('auth_date');
-        const hash = params.get('hash');
-        const signature = params.get('signature');
-        if (userStr) {
-          state = {
-            user: JSON.parse(decodeURIComponent(userStr)),
-            auth_date: auth_date || null,
-            hash: hash || null,
-            signature: signature || null,
-          };
-        }
-      } catch {}
-    } else if (stateRaw && stateRaw.user) {
-      // Приводим auth_date к строке, если это Date
-      let auth_date: string | null = null;
-      if (stateRaw.auth_date instanceof Date) {
-        auth_date = stateRaw.auth_date.toISOString();
-      } else if (typeof stateRaw.auth_date === 'string') {
-        auth_date = stateRaw.auth_date;
-      }
-      state = {
-        ...stateRaw,
-        auth_date,
-        user: stateRaw.user ?? undefined, // user всегда присутствует
-      };
-    }
+export const useLaunchParamsStore = create<LaunchParamsState>((set) => {
+  const raw = initDataRaw() ?? "Empty";
+  const stateRaw = initDataState();
+  var headers = import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW 
+    ? { 'Authorization': `tma ${import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW}` } 
+    : { 'Authorization': `tma ${raw}` };
 
-    set({
-      initDataRaw: raw,
-      initDataState: state,
-      headers,
-    });
-  },
-})); 
+  return {
+    platform: 'base',
+    appearance: 'light',
+    initDataRaw: null,
+    initDataState: null,
+    headers,
+    initFromTelegram: () => {
+    
+      let state: InitData | null = null;
+
+      if ((!stateRaw || !stateRaw.user) && raw) {
+        try {
+          const params = new URLSearchParams(raw);
+          const userStr = params.get('user');
+          const auth_date = params.get('auth_date');
+          const hash = params.get('hash');
+          const signature = params.get('signature');
+          if (userStr) {
+            state = {
+              user: JSON.parse(decodeURIComponent(userStr)),
+              auth_date: auth_date || null,
+              hash: hash || null,
+              signature: signature || null,
+            };
+          }
+        } catch {}
+      } else if (stateRaw && stateRaw.user) {
+        // Приводим auth_date к строке, если это Date
+        let auth_date: string | null = null;
+        if (stateRaw.auth_date instanceof Date) {
+          auth_date = stateRaw.auth_date.toISOString();
+        } else if (typeof stateRaw.auth_date === 'string') {
+          auth_date = stateRaw.auth_date;
+        }
+        state = {
+          ...stateRaw,
+          auth_date,
+          user: stateRaw.user ?? undefined, // user всегда присутствует
+        };
+      }
+
+      set({
+        initDataRaw: raw,
+        initDataState: state,
+        headers,
+      });
+    },
+  };
+}); 
