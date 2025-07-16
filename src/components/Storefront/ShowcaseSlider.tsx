@@ -9,7 +9,7 @@ import { PackInfo } from '../Pack/PackInfo';
 
 export interface ShowcaseSliderProps {
   onOpenPack: (packId: string) => void;
-  onBuyPack: () => void;
+  onBuyPack: (packId: string) => void;
 }
 
 const styles = {

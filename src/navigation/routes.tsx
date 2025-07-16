@@ -1,6 +1,6 @@
 import type { ComponentType, JSX } from 'react';
 
-import { IndexPage } from '@/pages/Index/IndexPage';
+import { IndexPage } from '@/pages/IndexScreen';
 import { CollectionPage } from '@/pages/Collection/CollectionPage';
 import { InitDataPage } from '@/pages/InitDataPage';
 import OpenPackPage from '@/pages/Collection/OpenPackPage';
@@ -9,7 +9,8 @@ import { UpgradeCardPage } from '@/pages/Collection/UpgradePage';
 // Заглушки для новых страниц
 import PremiumShopPage from '../pages/ShopPage/PremiumShopPage';
 import PackPage from '../pages/Packs/PackPage';
-import PackPurchaseResultPage from '../pages/ShopPage/PackPurchaseResultPage';
+import PackPurchaseResultScreen from '../pages/ShopPage/PackPurchaseResultScreen';
+import PackPurchaseScreen from '../pages/ShopPage/PackPurchaseScreen';
 
 
 interface Route {
@@ -28,7 +29,8 @@ export const routes: Route[] = [
   // { path: '/collection/card/:cardId/disassemble', Component: RecyclePage, title: 'Disassemble Card' },
   { path: '/pack/:packId', Component: PackPage, title: 'Pack' },
   { path: '/premium-shop', Component: PremiumShopPage, title: 'Premium Shop' },
-  { path: '/pack/:packId/purchase-result', Component: PackPurchaseResultPage, title: 'Pack Purchase Result' },
+  { path: '/packs/:packId/purchase-result', Component: PackPurchaseResultScreen, title: 'Pack Purchase Result' },
+  { path: '/packs/:packId', Component: PackPurchaseScreen, title: 'Pack Purchase' },
   { path: '/shop', Component: InitDataPage, title: 'Shop' },
   { path: '/marketplace', Component: InitDataPage, title: 'Marketplace' },
 ];

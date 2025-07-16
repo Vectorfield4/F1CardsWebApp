@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import { useCallback, useEffect } from 'react';
 import { Page } from '@/components/Page.tsx'; 
 import { Text, Button } from '@telegram-apps/telegram-ui';
+import { useNavigate } from 'react-router-dom';
 
 import { useMainScreenStore } from '@/store/mainScreenStore';
 import { fetchMainScreenData } from '@/store/fetchMainScreenData';
@@ -51,9 +52,10 @@ export const IndexPage: FC = () => {
   const handleOpenPack = useCallback((packId: string) => {
     alert('Открытие пака будет реализовано позже. packId: ' + packId);
   }, []);
-  const handleBuyPack = useCallback(() => {
-    alert('Покупка пака будет реализована позже.');
-  }, []);
+  const navigate = useNavigate();
+  const handleBuyPack = useCallback((packId: string) => {
+    navigate(`/packs/${packId}`);
+  }, [navigate]);
 
   return (
     <Page back={false}>

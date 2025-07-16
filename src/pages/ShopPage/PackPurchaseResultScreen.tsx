@@ -5,7 +5,7 @@ import { GET_PACK_PURCHASE_RESULT, PackPurchaseResult } from '@/services/queries
 import { Spinner, Button, Text } from '@telegram-apps/telegram-ui';
 import { Page } from '@/components/Page';
 
-const PackPurchaseResultPage: React.FC = () => {
+const PackPurchaseResultScreen: React.FC = () => {
   const { packId } = useParams<{ packId: string }>();
   const navigate = useNavigate();
   const { data, loading, error } = useQuery<{ getPackPurchaseResultDisplayData: PackPurchaseResult }>(GET_PACK_PURCHASE_RESULT, {
@@ -37,4 +37,4 @@ const PackPurchaseResultPage: React.FC = () => {
   );
 };
 
-export default PackPurchaseResultPage; 
+export default PackPurchaseResultScreen; 

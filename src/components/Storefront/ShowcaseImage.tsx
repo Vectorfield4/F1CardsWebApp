@@ -4,14 +4,14 @@ import type { MainScreenShowcaseItem } from '@/services/queries';
 interface ShowcaseImageProps {
   showcase: MainScreenShowcaseItem;
   onOpenPack?: (packId: string) => void;
-  onBuyPack?: () => void;
+  onBuyPack?: (packId: string) => void;
 }
 
 export const ShowcaseImage: React.FC<ShowcaseImageProps> = ({ showcase, onOpenPack, onBuyPack }) => {
   const { cardSet, isOwned } = showcase;
   const handleClick = () => {
     if (isOwned && onOpenPack) onOpenPack(cardSet.id);
-    if (!isOwned && onBuyPack) onBuyPack();
+    if (!isOwned && onBuyPack) onBuyPack(cardSet.id);
   };
 
   return (
@@ -33,7 +33,7 @@ export const ShowcaseImage: React.FC<ShowcaseImageProps> = ({ showcase, onOpenPa
       ) : (
         <span
           style={{ color: '#F2C869', cursor: 'pointer' }}
-          onClick={onBuyPack}
+          onClick={() => onBuyPack && onBuyPack(cardSet.id)}
         >
           Перейти в магазин →
         </span>
