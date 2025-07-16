@@ -42,7 +42,7 @@ export function ErrorMessage({ error, onRetry }: ErrorMessageProps) {
         </pre>
       )}
       <Button size="s" mode="outline" onClick={onRetry}>
-        Повторить
+        Повторить 
       </Button>
     </div>
   );

@@ -10,11 +10,12 @@ import { BgBlur100, BgBlur250 } from '@/components/BgBlur';
 import { SpinnerBlock } from '@/components/SpinnerBlock';
 import { ShowcaseSlider } from '@/components/Storefront/ShowcaseSlider';
 import { ErrorMessage } from '@/components/ErrorMessage';
+import { useLaunchParamsStore } from '@/store/launchParamsStore';
 
 export const IndexScreen = () => {
   const navigate = useNavigate();
   const { loading, error } = useMainScreenStore();
-  
+  const { initFromTelegram } = useLaunchParamsStore();
 
   const handleOpenPack = useCallback((packId: string) => {
     alert('Открытие пака будет реализовано позже. packId: ' + packId);
@@ -25,6 +26,7 @@ export const IndexScreen = () => {
   }, [navigate]);
 
   useEffect(() => {
+    initFromTelegram();
     fetchMainScreenData();
   }, []);
 
@@ -33,7 +35,10 @@ export const IndexScreen = () => {
   }
 
   if (error) {
-    return <ErrorMessage error={error} onRetry={() => fetchMainScreenData()} />;
+    return <ErrorMessage error={error} onRetry={() => {
+      initFromTelegram();
+      fetchMainScreenData();
+    }} />;
   }
 
   return (
