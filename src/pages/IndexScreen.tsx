@@ -11,11 +11,13 @@ import { SpinnerBlock } from '@/components/SpinnerBlock';
 import { ShowcaseSlider } from '@/components/Storefront/ShowcaseSlider';
 import { ErrorMessage } from '@/components/ErrorMessage';
 import { useLaunchParamsStore } from '@/store/launchParamsStore';
+import { retrieveLaunchParams } from '@telegram-apps/sdk';
 
 export const IndexScreen = () => {
   const navigate = useNavigate();
   const { loading, error } = useMainScreenStore();
   const { initFromTelegram } = useLaunchParamsStore();
+  const { initDataRaw } = retrieveLaunchParams();
 
   const handleOpenPack = useCallback((packId: string) => {
     alert('Открытие пака будет реализовано позже. packId: ' + packId);
@@ -35,10 +37,15 @@ export const IndexScreen = () => {
   }
 
   if (error) {
-    return <ErrorMessage error={error} onRetry={() => {
-      initFromTelegram();
-      fetchMainScreenData();
-    }} />;
+    return (
+      <div>
+        <pre>{JSON.stringify(initDataRaw, null, 2)}</pre>
+        <ErrorMessage error={error} onRetry={() => {
+          initFromTelegram();
+          fetchMainScreenData();
+        }} />
+      </div>
+    );
   }
 
   return (
