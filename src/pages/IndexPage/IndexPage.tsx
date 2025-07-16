@@ -1,69 +1,114 @@
-import { Link } from '@/components/Link/Link';
-import { useQuery, ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
-import { GET_MAIN_SCREEN_DISPLAY_DATA, MainScreenDisplayData } from '@/services/queries';
-import { authService } from '@/services/authService';
-import { Spinner } from '@telegram-apps/telegram-ui';
+// ВАЖНО: Все типы и структуры данных для GraphQL-запросов и мутаций должны основываться на src/services/queries.ts
+// Это основной источник правды для типов данных Apollo Client в проекте.
+import type { FC } from 'react';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PackSlider } from '@/components/Pack/PackSlider';
+import { Page } from '@/components/Page.tsx';
+import { Spinner, Text, Button } from '@telegram-apps/telegram-ui';
+import { useQuery } from '@apollo/client';
+import {
+  GET_MAIN_SCREEN_DISPLAY_DATA,
+  MainScreenDisplayData
+} from '@/services/queries';
+import PlayerStatistics from '@/components/Player/player-statistics';
 
-const graphqlUri = import.meta.env.VITE_BACKEND_API || 'http://localhost:8080/graphql';
+export const IndexPage: FC = () => {
+  const navigate = useNavigate();
+  const { data, loading, error, refetch } = useQuery<{ getMainScreenDisplayData: MainScreenDisplayData }>(GET_MAIN_SCREEN_DISPLAY_DATA);
 
-const httpLink = createHttpLink({
-  uri: graphqlUri,
-  fetch: (uri, options) => {
-    const headers: Record<string, string> = options?.headers ? { ...options.headers as Record<string, string> } : {};
-    const tma = authService.getInitData();
-    if (tma) headers['Authorization'] = `tma ${tma}`;
-    return fetch(uri, { ...options, headers });
-  },
-});
+  // Если не авторизован — редирект (пример, если сервер возвращает ошибку авторизации)
+  if (error && error.message.includes('auth')) {
+    navigate('/login');
+    return null;
+  }
 
-const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
-});
-
-export function IndexPage() {
-  const { data, loading, error } = useQuery<{ getMainScreenDisplayData: MainScreenDisplayData }>(GET_MAIN_SCREEN_DISPLAY_DATA);
-
-  if (loading || error || !data) {
+  // Лоадер
+  if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '80vh' }}>
-        <Spinner size="l" />
-      </div>
+      <Page back={false}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '400px',
+          flexDirection: 'column',
+          gap: '16px'
+        }}>
+          <Spinner size="l" />
+          <Text>Загружаем игровые данные...</Text>
+        </div>
+      </Page>
     );
   }
 
-  const { player, stats, showcase } = data.getMainScreenDisplayData;
+  // Ошибка
+  if (error) {
+    return (
+      <Page back={false}>
+        <div style={{
+          margin: '16px',
+          padding: '12px',
+          background: '#FF4444',
+          borderRadius: '8px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <Text style={{ color: 'white', flex: 1 }}>{error.message}</Text>
+          <Button size="s" mode="outline" onClick={() => refetch()}>
+            Повторить
+          </Button>
+        </div>
+      </Page>
+    );
+  }
+
+  const { stats, showcase } = data!.getMainScreenDisplayData;
+
+  // Заглушки для открытия/покупки пака
+  const handleOpenPack = useCallback((packId: string) => {
+    alert('Открытие пака будет реализовано позже. packId: ' + packId);
+  }, []);
+  const handleBuyPack = useCallback(() => {
+    alert('Покупка пака будет реализована позже.');
+  }, []);
 
   return (
-    <ApolloProvider client={client}>
-      <div>
-        <div className='links'>
-          <Link to='/collection'>Моя коллекция</Link>
-          <Link to='/shop'>Магазин</Link>
-          <Link to='/marketplace'>Маркетплейс</Link>
-        </div>
-        <div style={{ margin: '24px 0' }}>
-          <h2>Игрок: {player.username}</h2>
-        </div>
-        <div>
-          <h3>Showcase</h3>
-          <ul>
-            {showcase.map((item) => (
-              <li key={item.cardSet.id}>
-                {item.cardSet.name} {item.isOwned ? '(Владеет)' : '(Нет)'}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h3>Статистика игрока</h3>
-          <ul>
-            {stats.map((s) => (
-              <li key={s.type}>{s.type}: {s.value}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </ApolloProvider>
+    <Page back={false}>
+      {/* Фоновые эффекты */}
+      <div id="bg-blur-100" style={{ 
+        position: 'absolute',
+        top: '35%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '100%',
+        height: '400px',
+        background: 'radial-gradient(circle, #D37492 0%, #F64073 51%, #DB3538 100%)',
+        filter: 'blur(50px)',
+        mixBlendMode: 'soft-light',
+        zIndex: -1
+      }}></div>
+      <div id="bg-blur-250" style={{ 
+        position: 'absolute',
+        top: '35%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '100%',
+        height: '400px',
+        background: 'radial-gradient(circle, #D37492 0%, #F64073 51%, #DB3538 100%)',
+        filter: 'blur(125px)',
+        opacity: 0.75,
+        zIndex: -2
+      }}></div>
+
+      <PackSlider 
+        packs={showcase}
+        onOpenPack={handleOpenPack}
+        onBuyPack={handleBuyPack}
+      />
+
+      <PlayerStatistics stats={stats} />
+    </Page>
   );
-}
+};

@@ -1,11 +1,12 @@
 import { type FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Page } from '@/components/Page';
-import { CardGrid } from '@/components/CardGrid/CardGrid';
+
 import { FilterChips, FilterOption } from '@/components/FilterChips/FilterChips';
 import { CollectionHeader } from '@/components/CollectionHeader/CollectionHeader';
 import { useQuery } from '@apollo/client';
 import { GET_COLLECTION_DISPLAY_DATA, CollectionCard } from '@/services/queries';
+import { CardGrid } from './CardGrid/CardGrid';
 
 const seasonOptions: FilterOption[] = [
   { id: '2025', label: 'Сезон-2025' },
@@ -26,20 +27,6 @@ export const CollectionPage: FC = () => {
 
   const { data, loading, error } = useQuery<{ getCollectionDisplayData: CollectionCard[] }>(GET_COLLECTION_DISPLAY_DATA);
   const cards = data?.getCollectionDisplayData || [];
-
-  // Преобразуем данные для CardGrid
-  const gridCards = cards.map(card => ({
-    id: Number(card.id),
-    cardId: Number(card.cardId),
-    name: card.name,
-    imageUrl: card.previewUrls[0] || '',
-    cardTypeId: Number(card.cardTypeId),
-    rarity: 'common' as const, // TODO: преобразовать rarityId в строку (common/rare/epic/legendary)
-    quantity: card.quantity,
-    level: card.level,
-    playerId: '',
-    obtainedAt: '',
-  }));
 
   return (
     <Page back={true}>
@@ -75,8 +62,8 @@ export const CollectionPage: FC = () => {
         {error && <p style={{ color: 'red' }}>{error.message}</p>}
         {!loading && !error && (
             <CardGrid 
-              cards={gridCards} 
-              onCardClick={(cardId) => navigate(`/collection/player-card/${cardId}`)} 
+              cards={cards} 
+              onCardClick={(cardId: number) => navigate(`/collection/player-card/${cardId}`)} 
             />
         )}
       </div>

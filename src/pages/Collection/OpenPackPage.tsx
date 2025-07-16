@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Page } from '@/components/Page';
 import CollectionCard, { GameCardRarity, GameCardType } from '@/components/Card/Card';
-import { gameStateService, PackOpeningResult, Card } from '@/services/gameStateService';
+// Удалён импорт gameStateService, PackOpeningResult, Card
 import { Spinner, Text, Button } from '@telegram-apps/telegram-ui';
 
 const OpenPackPage: FC = () => {
@@ -10,7 +10,7 @@ const OpenPackPage: FC = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<PackOpeningResult | null>(null);
+  const [result] = useState<any | null>(null); // Замените PackOpeningResult на any, так как gameStateService удалён
 
   useEffect(() => {
     if (packId) {
@@ -26,8 +26,9 @@ const OpenPackPage: FC = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const packOpeningResult = await gameStateService.openPack(parseInt(packId!));
-      setResult(packOpeningResult);
+      // Удаляю все строки с gameStateService
+      // const packOpeningResult = await gameStateService.openPack(parseInt(packId!));
+      // setResult(packOpeningResult);
     } catch (err: any) {
       setError(err.message || 'Произошла ошибка при открытии набора');
     } finally {
@@ -67,7 +68,7 @@ const OpenPackPage: FC = () => {
       <div style={{ padding: '1rem' }}>
         <Text weight="1" style={{ textAlign: 'center', marginBottom: '1rem' }}>Поздравляем! Вот ваши новые карты:</Text>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
-          {result?.cards.map((card: Card) => {
+          {result?.cards.map((card: any) => { // Замените Card на any, так как gameStateService удалён
             // Временное сопоставление ID с типами и редкостями.
             // В будущем это должно приходить с бэкенда или быть в отдельном справочнике.
             const rarityMap: { [key: number]: GameCardRarity } = { 1: 'common', 2: 'rare', 3: 'epic', 4: 'legendary' };

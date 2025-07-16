@@ -1,10 +1,9 @@
-import { ShowcaseViewDto } from './ShowcaseViewDto';
+import type { MainScreenShowcaseItem } from '@/services/queries';
 import { useState } from 'react';
 import InfoCard from '../Card/info-card';
 
-
 export interface PackSliderProps {
-  packs: ShowcaseViewDto[];
+  packs: MainScreenShowcaseItem[];
   onOpenPack: (packId: string) => void;
   onBuyPack: () => void;
 }
@@ -41,90 +40,89 @@ export const PackSlider = ({ packs, onOpenPack, onBuyPack }: PackSliderProps) =>
   };
 
   const currentPack = packs[currentIndex];
-  const canOpenPack = currentPack.count > 0;
+  const canOpenPack = currentPack.isOwned;
 
   const arrowStyles: React.CSSProperties = {
-  position: 'absolute' as const,
-  width: '34px',
-  height: '34px',
-  cursor: 'pointer',
-};
+    position: 'absolute' as const,
+    width: '34px',
+    height: '34px',
+    cursor: 'pointer',
+  };
 
-return (
-  <>
-    <div id='packSlider' style={{
-      position: 'relative',
-      overflow: 'hidden',
-      isolation: 'isolate',
-      minHeight: '400px',
-      color: 'white'
-    }}>
-
-      <Partials />
-      <Rings />
-
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        minHeight: '400px',
-        width: '100%', 
+  return (
+    <>
+      <div id='packSlider' style={{
+        position: 'relative',
         overflow: 'hidden',
-        zIndex: 5, 
-        paddingBottom: '16px' 
+        isolation: 'isolate',
+        minHeight: '400px',
+        color: 'white'
       }}>
-        <img src="https://s3.twcstorage.ru/1daee0b6-4b362c06-45a2-4fa0-b1aa-f30cd02cde29/icons/LArrow.svg"
-          alt="Previous pack"
-          aria-label="Previous pack"
-          style={{ 
-            ...arrowStyles,
-            left: '12px',
-            marginLeft: '12px',
-          }}
-          onClick={goPrev}
-        />
+        <Partials />
+        <Rings />
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          minHeight: '400px',
+          width: '100%', 
+          overflow: 'hidden',
+          zIndex: 5, 
+          paddingBottom: '16px' 
+        }}>
+          <img src="https://s3.twcstorage.ru/1daee0b6-4b362c06-45a2-4fa0-b1aa-f30cd02cde29/icons/LArrow.svg"
+            alt="Previous pack"
+            aria-label="Previous pack"
+            style={{ 
+              ...arrowStyles,
+              left: '12px',
+              marginLeft: '12px',
+            }}
+            onClick={goPrev}
+          />
 
-        <img 
-          src={currentPack.imageUrl} 
-          alt={currentPack.name} 
-          width={'231px'}
-          height={'277px'}
-          style={{ 
-            objectFit: 'cover',
-            cursor: canOpenPack ? 'pointer' : 'default',
-          }}
-          onClick={canOpenPack ? () => onOpenPack(currentPack.cardSetId.toString()) : undefined}
-        />
+          {/* Нет imageUrl в MainScreenShowcaseItem, поэтому используем заглушку */}
+          <img 
+            src={"../assets/demo/pack1.png"} 
+            alt={currentPack.cardSet.name} 
+            width={'231px'}
+            height={'277px'}
+            style={{ 
+              objectFit: 'cover',
+              cursor: canOpenPack ? 'pointer' : 'default',
+            }}
+            onClick={canOpenPack ? () => onOpenPack(currentPack.cardSet.id) : undefined}
+          />
 
-        <img src="https://s3.twcstorage.ru/1daee0b6-4b362c06-45a2-4fa0-b1aa-f30cd02cde29/icons/RArrow.svg"
-          aria-label="Next pack"
-          alt="Next pack"
-          onClick={goNext} 
-          style={{ 
-            ...arrowStyles,
-            right: '12px',
-            width: '28px',
-            height: '28px',
-            marginRight: '12px',
-          }} 
-        />
+          <img src="https://s3.twcstorage.ru/1daee0b6-4b362c06-45a2-4fa0-b1aa-f30cd02cde29/icons/RArrow.svg"
+            aria-label="Next pack"
+            alt="Next pack"
+            onClick={goNext} 
+            style={{ 
+              ...arrowStyles,
+              right: '12px',
+              width: '28px',
+              height: '28px',
+              marginRight: '12px',
+            }} 
+          />
+        </div>
+
+        <div style={{ textAlign: 'center', position: 'absolute', bottom: '10px', width: '100%' }}>
+          <h2 style={{ marginBottom: '8px' }}>{currentPack.cardSet.name}</h2>
+          {currentPack.isOwned ? (
+            <span style={{ color: '#7CFC00' }}>Владеет</span>
+          ) : (
+            <span 
+              style={{ color: '#F2C869', cursor: 'pointer' }}
+              onClick={onBuyPack}
+            >
+              Перейти в магазин →
+            </span>
+          )}
+        </div>
       </div>
-
-      <div style={{ textAlign: 'center', position: 'absolute', bottom: '10px', width: '100%' }}>
-        <h2 style={{ marginBottom: '8px' }}>{currentPack.name}</h2>
-        {currentPack.count > 0 ? (
-          <span>В наличии: {currentPack.count}шт.</span>
-        ) : (
-          <span 
-            style={{ color: '#F2C869', cursor: 'pointer' }}
-            onClick={onBuyPack}
-          >
-            Перейти в магазин →
-          </span>
-        )}
-      </div>
-
-    </div>
-    <InfoCard />
-  </>
-)};
+      <InfoCard />
+    </>
+  );
+};

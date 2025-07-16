@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { initDataState as _initDataState, useSignal } from '@telegram-apps/sdk-react';
 import { Text, Image } from '@telegram-apps/telegram-ui';
 import { authService } from '@/services/authService';
-import { gameStateService } from '@/services/gameStateService';
 
 const StatItem = ({ value, color, icon }: { value: string, color: string, icon: string }) => (
     <div style={{
@@ -30,12 +29,13 @@ export const Header = () => {
     loadCurrencies();
     
     // Подписываемся на изменения в игровом состоянии
-    const unsubscribe = gameStateService.subscribe(() => {
-      loadCurrencies();
-    });
+    // Удалён импорт gameStateService
+    // const unsubscribe = gameStateService.subscribe(() => {
+    //   loadCurrencies();
+    // });
 
     return () => {
-      unsubscribe();
+      // unsubscribe();
     };
   }, []);
 
