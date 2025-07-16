@@ -14,7 +14,13 @@ import { ShowcaseSlider } from '@/components/Storefront/ShowcaseSlider';
 
 export const IndexScreen = () => {
   const { loading, error } = useMainScreenStore();
-
+  const handleOpenPack = useCallback((packId: string) => {
+    alert('Открытие пака будет реализовано позже. packId: ' + packId);
+  }, []);
+  const navigate = useNavigate();
+  const handleBuyPack = useCallback((packId: string) => {
+    navigate(`/packs/${packId}`);
+  }, [navigate]);
   useEffect(() => {
     fetchMainScreenData();
   }, []);
@@ -47,14 +53,6 @@ export const IndexScreen = () => {
       </Screen>
     );
   }
-
-  const handleOpenPack = useCallback((packId: string) => {
-    alert('Открытие пака будет реализовано позже. packId: ' + packId);
-  }, []);
-  const navigate = useNavigate();
-  const handleBuyPack = useCallback((packId: string) => {
-    navigate(`/packs/${packId}`);
-  }, [navigate]);
 
   return (
     <Screen back={false}>
