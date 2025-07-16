@@ -6,7 +6,6 @@ import { AppRoot, Spinner } from '@telegram-apps/telegram-ui';
 import { routes } from '@/navigation/routes.tsx';
 import { BottomNav } from './BottomNav/BottomNav';
 import { Header } from './Header/Header';
-import { ProtectedRoute } from '@/navigation/ProtectedRoute';
 import { authService } from '@/services/authService';
 
 export function App() {
@@ -50,7 +49,7 @@ export function App() {
       <HashRouter>
         <Header />
         <Routes>
-          <Route element={<ProtectedRoute />}>
+          <Route>
             {routes.map((route) => (
               <Route key={route.path} path={route.path} element={<route.Component />} />
             ))}

@@ -2,7 +2,6 @@
 // Это основной источник правды для типов данных Apollo Client в проекте.
 import type { FC } from 'react';
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { PackSlider } from '@/components/Pack/PackSlider';
 import { Page } from '@/components/Page.tsx';
 import { Spinner, Text, Button } from '@telegram-apps/telegram-ui';
@@ -14,14 +13,7 @@ import {
 import PlayerStatistics from '@/components/Player/player-statistics';
 
 export const IndexPage: FC = () => {
-  const navigate = useNavigate();
   const { data, loading, error, refetch } = useQuery<{ getMainScreenDisplayData: MainScreenDisplayData }>(GET_MAIN_SCREEN_DISPLAY_DATA);
-
-  // Если не авторизован — редирект (пример, если сервер возвращает ошибку авторизации)
-  if (error && error.message.includes('auth')) {
-    navigate('/login');
-    return null;
-  }
 
   // Лоадер
   if (loading) {
