@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { initDataState as _initDataState, useSignal } from '@telegram-apps/sdk-react';
 import { Text, Image } from '@telegram-apps/telegram-ui';
 import { authService } from '@/services/authService';
+import { useLaunchParamsStore } from '@/store/launchParamsStore';
 
 const StatItem = ({ value, color, icon }: { value: string, color: string, icon: string }) => (
     <div style={{
@@ -22,21 +22,12 @@ const StatItem = ({ value, color, icon }: { value: string, color: string, icon: 
   );
 
 export const Header = () => {
-  const initDataState = useSignal(_initDataState);
+  const { initDataState } = useLaunchParamsStore();
   const [currencies, setCurrencies] = useState({ gold: 0, dust: 0 });
 
   useEffect(() => {
     loadCurrencies();
-    
-    // Подписываемся на изменения в игровом состоянии
-    // Удалён импорт gameStateService
-    // const unsubscribe = gameStateService.subscribe(() => {
-    //   loadCurrencies();
-    // });
-
-    return () => {
-      // unsubscribe();
-    };
+    return () => {};
   }, []);
 
   const loadCurrencies = () => {

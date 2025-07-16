@@ -2,56 +2,38 @@
 // Это основной источник правды для типов данных Apollo Client в проекте.
 import { useCallback, useEffect } from 'react';
 import { Screen } from '@/components/Screens/Screen'; 
-import { Text, Button } from '@telegram-apps/telegram-ui';
 import { useNavigate } from 'react-router-dom';
 
-import { useMainScreenStore } from '@/store/mainScreenStore';
-import { fetchMainScreenData } from '@/store/fetchMainScreenData';
+import { fetchMainScreenData, useMainScreenStore } from '@/store/mainScreenStore';
 import { PlayerStatistics } from '@/components/Player/PlayerStatistics';
 import { BgBlur100, BgBlur250 } from '@/components/BgBlur';
 import { SpinnerBlock } from '@/components/SpinnerBlock';
 import { ShowcaseSlider } from '@/components/Storefront/ShowcaseSlider';
+import { ErrorMessage } from '@/components/ErrorMessage';
 
 export const IndexScreen = () => {
+  const navigate = useNavigate();
   const { loading, error } = useMainScreenStore();
+  
+
   const handleOpenPack = useCallback((packId: string) => {
     alert('Открытие пака будет реализовано позже. packId: ' + packId);
   }, []);
-  const navigate = useNavigate();
+  
   const handleBuyPack = useCallback((packId: string) => {
     navigate(`/packs/${packId}`);
   }, [navigate]);
+
   useEffect(() => {
     fetchMainScreenData();
   }, []);
 
   if (loading) {
-    return (
-      <Screen back={false}>
-        <SpinnerBlock />
-      </Screen>
-    );
+    return <SpinnerBlock />;
   }
 
   if (error) {
-    return (
-      <Screen back={false}>
-        <div style={{
-          margin: '16px',
-          padding: '12px',
-          background: '#FF4444',
-          borderRadius: '8px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <Text style={{ color: 'white', flex: 1 }}>{error}</Text>
-          <Button size="s" mode="outline" onClick={() => fetchMainScreenData()}>
-            Повторить
-          </Button>
-        </div>
-      </Screen>
-    );
+    return <ErrorMessage error={error} onRetry={() => fetchMainScreenData()} />;
   }
 
   return (

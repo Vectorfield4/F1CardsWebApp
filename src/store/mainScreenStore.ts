@@ -1,4 +1,10 @@
 import { create } from 'zustand';
+import { apolloClient } from '@/services/apolloClient';
+import { GET_MAIN_SCREEN_DISPLAY_DATA, MainScreenDisplayData } from '@/services/queries';
+import { usePlayerStore } from './playerStore';
+import { useStatsStore } from './statsStore';
+import { useShowcaseStore } from './showcaseStore';
+import { useLaunchParamsStore } from './launchParamsStore';
 
 export const useMainScreenStore = create<{
   loading: boolean;
@@ -10,4 +16,30 @@ export const useMainScreenStore = create<{
   error: null,
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
+  fetchMainScreenData: async () => {
+    await fetchMainScreenData();
+  },
 })); 
+
+export async function fetchMainScreenData() {
+  const { setPlayer } = usePlayerStore.getState();
+  const { setStats } = useStatsStore.getState();
+  const { setShowcases } = useShowcaseStore.getState();
+  const { setLoading, setError } = useMainScreenStore.getState();
+  const { headers } = useLaunchParamsStore.getState();
+  setLoading(true);
+  setError(null);
+  try {
+    const { data } = await apolloClient.query<{ getMainScreenDisplayData: MainScreenDisplayData }>({
+      query: GET_MAIN_SCREEN_DISPLAY_DATA,
+      context: { headers }
+    });
+    setPlayer(data.getMainScreenDisplayData.player);
+    setStats(data.getMainScreenDisplayData.stats);
+    setShowcases(data.getMainScreenDisplayData.showcase);
+  } catch (e: any) {
+    setError(e.message);
+  } finally {
+    setLoading(false);
+  }
+} 
