@@ -1,5 +1,13 @@
 import { App } from '@/components/App';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+const graphqlUri = import.meta.env.VITE_BACKEND_API || 'http://localhost:8080/graphql';
+
+const client = new ApolloClient({
+  uri: graphqlUri,
+  cache: new InMemoryCache(),
+});
 
 function ErrorBoundaryError({ error }: { error: unknown }) {
   return (
@@ -20,8 +28,10 @@ function ErrorBoundaryError({ error }: { error: unknown }) {
 
 export function Root() {
   return (
-    <ErrorBoundary fallback={ErrorBoundaryError}>
-      <App/>
-    </ErrorBoundary>
+    <ApolloProvider client={client}>
+      <ErrorBoundary fallback={ErrorBoundaryError}>
+        <App/>
+      </ErrorBoundary>
+    </ApolloProvider>
   );
 }

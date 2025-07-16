@@ -64,12 +64,12 @@ export const Header = () => {
     { 
       value: formatCurrency(currencies.gold), 
       color:'#F2C869', 
-      icon: '../assets/icons/gold.svg' 
+      icon: 'https://s3.twcstorage.ru/1daee0b6-4b362c06-45a2-4fa0-b1aa-f30cd02cde29/icons/gold.svg' 
     },
     { 
       value: formatCurrency(currencies.dust), 
       color:'white', 
-      icon: '../assets/icons/dust.svg' 
+      icon: 'https://s3.twcstorage.ru/1daee0b6-4b362c06-45a2-4fa0-b1aa-f30cd02cde29/icons/dust.svg' 
     }
   ];
 

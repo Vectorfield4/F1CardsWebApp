@@ -1,5 +1,5 @@
 import { ShowcaseViewDto } from './ShowcaseViewDto';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import InfoCard from '../Card/info-card';
 
 
@@ -73,7 +73,7 @@ return (
         zIndex: 5, 
         paddingBottom: '16px' 
       }}>
-        <img src='../assets/icons/LArrow.svg'
+        <img src="https://s3.twcstorage.ru/1daee0b6-4b362c06-45a2-4fa0-b1aa-f30cd02cde29/icons/LArrow.svg"
           alt="Previous pack"
           aria-label="Previous pack"
           style={{ 
@@ -96,7 +96,7 @@ return (
           onClick={canOpenPack ? () => onOpenPack(currentPack.cardSetId.toString()) : undefined}
         />
 
-        <img src='../assets/icons/RArrow.svg'
+        <img src="https://s3.twcstorage.ru/1daee0b6-4b362c06-45a2-4fa0-b1aa-f30cd02cde29/icons/RArrow.svg"
           aria-label="Next pack"
           alt="Next pack"
           onClick={goNext} 

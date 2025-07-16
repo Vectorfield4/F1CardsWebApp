@@ -69,7 +69,6 @@ export default function PlayerStatistics() {
   const loadPlayerStatistics = async () => {
     try {
       const playerDetails = authService.getPlayerDetails();
-      const playerStats = gameStateService.getPlayerStats();
       const collection = gameStateService.getCollection();
       
       if (!playerDetails) {

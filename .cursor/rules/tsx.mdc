@@ -1,0 +1,177 @@
+# TypeScript React (.tsx) Best Practices and Coding Standards
+
+This document provides a comprehensive guide to TypeScript React (.tsx) best practices, coding standards, and common patterns for writing maintainable, performant, and secure code.
+
+**Library Information:**
+- Name: typescript-react
+- Tags: language, microsoft, typescript, react, frontend
+
+## 1. Code Organization and Structure
+
+### 1.1. Directory Structure Best Practices
+
+*   **Project Root:** Contains the project file (package.json) and source directories.
+*   **Source Directory:** Contains the main source code.
+    *   `src/`: Contains the main source code.
+        *   `components/`: React components and UI elements.
+        *   `pages/`: Page-level components and routing.
+        *   `services/`: API calls, business logic, and external integrations.
+        *   `types/`: TypeScript type definitions and interfaces.
+        *   `hooks/`: Custom React hooks.
+        *   `utils/`: Helper functions and utilities.
+        *   `styles/`: CSS, SCSS, or styled-components files.
+        *   `assets/`: Images, icons, and other static assets.
+        *   `navigation/`: Routing configuration and navigation logic.
+    *   `public/`: Static files served directly.
+    *   `tests/`: Unit tests, integration tests, and test utilities.
+
+### 1.2. File Naming Conventions
+
+*   **Components:** PascalCase (e.g., `MyComponent.tsx`)
+*   **Hooks:** camelCase with 'use' prefix (e.g., `useMyHook.ts`)
+*   **Services:** camelCase (e.g., `apiService.ts`)
+*   **Types:** PascalCase (e.g., `UserTypes.ts`)
+*   **Utils:** camelCase (e.g., `formatDate.ts`)
+*   **Constants:** UPPER_SNAKE_CASE (e.g., `API_ENDPOINTS.ts`)
+
+### 1.3. Component Organization
+
+*   **Functional Components:** Use functional components with hooks instead of class components.
+*   **Component Structure:** One component per file, export as default.
+*   **Props Interface:** Define props interface at the top of the file.
+*   **TypeScript:** Always use TypeScript for type safety.
+
+### 1.4. Import/Export Best Practices
+
+*   **Named Exports:** Use named exports for utilities, types, and constants.
+*   **Default Exports:** Use default exports for components.
+*   **Import Order:** Group imports by type (React, third-party, local).
+*   **Absolute Imports:** Use absolute imports with path aliases (e.g., `@/components`).
+
+## 2. Common Patterns and Anti-patterns
+
+### 2.1. Recommended Patterns
+
+*   **Custom Hooks:** Extract reusable logic into custom hooks.
+*   **Component Composition:** Use composition over inheritance.
+*   **Props Destructuring:** Destructure props in function parameters.
+*   **Conditional Rendering:** Use ternary operators or logical AND for simple conditions.
+*   **Error Boundaries:** Implement error boundaries for error handling.
+*   **Memoization:** Use React.memo, useMemo, and useCallback for performance optimization.
+
+### 2.2. Anti-patterns
+
+*   **Large Components:** Avoid components with too many responsibilities.
+*   **Prop Drilling:** Avoid passing props through many levels of components.
+*   **Inline Styles:** Avoid inline styles for complex styling.
+*   **Direct DOM Manipulation:** Avoid direct DOM manipulation in React components.
+*   **Unnecessary Re-renders:** Avoid causing unnecessary re-renders.
+
+### 2.3. State Management
+
+*   **Local State:** Use useState for component-local state.
+*   **Global State:** Use Context API or state management libraries (Redux, Zustand) for global state.
+*   **Server State:** Use React Query, SWR, or Apollo Client for server state management.
+
+## 3. Performance Considerations
+
+### 3.1. Optimization Techniques
+
+*   **React.memo:** Memoize components to prevent unnecessary re-renders.
+*   **useMemo:** Memoize expensive calculations.
+*   **useCallback:** Memoize functions passed as props.
+*   **Code Splitting:** Use React.lazy and Suspense for code splitting.
+*   **Bundle Optimization:** Use tree shaking and minimize bundle size.
+
+### 3.2. Rendering Optimization
+
+*   **Virtual Scrolling:** Use virtual scrolling for large lists.
+*   **Lazy Loading:** Implement lazy loading for images and components.
+*   **Debouncing:** Use debouncing for search inputs and API calls.
+
+## 4. Security Best Practices
+
+### 4.1. Input Validation
+
+*   **Sanitize Inputs:** Always sanitize user inputs.
+*   **Type Validation:** Use TypeScript for type safety.
+*   **XSS Prevention:** Avoid dangerouslySetInnerHTML unless necessary.
+
+### 4.2. Authentication and Authorization
+
+*   **Token Management:** Securely store and manage authentication tokens.
+*   **Route Protection:** Implement protected routes for authenticated users.
+*   **Permission Checks:** Check user permissions before rendering sensitive content.
+
+## 5. Testing Approaches
+
+### 5.1. Unit Testing
+
+*   **Component Testing:** Test individual components in isolation.
+*   **Hook Testing:** Test custom hooks separately.
+*   **Mocking:** Mock external dependencies and API calls.
+
+### 5.2. Integration Testing
+
+*   **User Interactions:** Test user interactions and component integration.
+*   **API Integration:** Test integration with external APIs.
+*   **Routing:** Test navigation and routing functionality.
+
+## 6. Common Pitfalls and Gotchas
+
+### 6.1. Frequent Mistakes
+
+*   **Missing Dependencies:** Forgetting to add dependencies to useEffect or useCallback.
+*   **State Updates:** Not handling asynchronous state updates properly.
+*   **Memory Leaks:** Not cleaning up subscriptions and event listeners.
+*   **Type Errors:** Not properly typing props and state.
+
+### 6.2. Debugging Strategies
+
+*   **React DevTools:** Use React DevTools for component inspection.
+*   **Console Logging:** Use console.log strategically for debugging.
+*   **Error Boundaries:** Implement error boundaries to catch and handle errors gracefully.
+
+## 7. Tooling and Environment
+
+### 7.1. Recommended Development Tools
+
+*   **VS Code:** Use VS Code with TypeScript and React extensions.
+*   **ESLint:** Configure ESLint for code quality and consistency.
+*   **Prettier:** Use Prettier for code formatting.
+*   **TypeScript:** Always use TypeScript for better development experience.
+
+### 7.2. Build Configuration
+
+*   **Vite/Webpack:** Use modern build tools for fast development and optimized builds.
+*   **Environment Variables:** Use environment variables for configuration.
+*   **Path Aliases:** Configure path aliases for cleaner imports.
+
+## 8. File Location Rules
+
+### 8.1. .tsx Files Location
+
+*   **All .tsx files must be located only in F1CardsWebApp/src or F1CardsAdminApp/src.**
+*   **It is forbidden to create .tsx files in other places (e.g., in F1CardsBot or project root).**
+*   **Frontend source files should be organized in src directory with proper subdirectories.**
+*   **Any changes related to client-side code should be made only in src and its subdirectories.**
+
+## 9. GraphQL Integration
+
+### 9.1. Apollo Client Setup
+
+*   **ApolloProvider:** Wrap the app with ApolloProvider in the root component.
+*   **Environment Variables:** Use VITE_BACKEND_API for GraphQL endpoint configuration.
+*   **Fallback URL:** Default to http://localhost:8080/graphql if environment variable is not set.
+
+### 9.2. GraphQL Best Practices
+
+*   **Typed Queries:** Use GraphQL Code Generator for type-safe queries and mutations.
+*   **Error Handling:** Implement proper error handling for GraphQL operations.
+*   **Caching:** Leverage Apollo Client's caching capabilities for better performance.
+
+By following these best practices and coding standards, developers can write TypeScript React code that is maintainable, performant, secure, and reliable.
+description:
+globs:
+alwaysApply: false
+---

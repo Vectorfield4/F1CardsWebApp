@@ -1,10 +1,11 @@
-import { type FC, useState, useEffect } from 'react';
+import { type FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Page } from '@/components/Page';
-import { gameStateService, DetailedPlayerCard } from '@/services/gameStateService';
 import { CardGrid } from '@/components/CardGrid/CardGrid';
 import { FilterChips, FilterOption } from '@/components/FilterChips/FilterChips';
 import { CollectionHeader } from '@/components/CollectionHeader/CollectionHeader';
+import { useQuery } from '@apollo/client';
+import { GET_COLLECTION_DISPLAY_DATA, CollectionCard } from '@/services/queries';
 
 const seasonOptions: FilterOption[] = [
   { id: '2025', label: 'Сезон-2025' },
@@ -20,28 +21,25 @@ const cardTypeOptions: FilterOption[] = [
 
 export const CollectionPage: FC = () => {
   const navigate = useNavigate();
-  const [cards, setCards] = useState<DetailedPlayerCard[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [selectedSeason, setSelectedSeason] = useState<string>('2025');
   const [selectedCardType, setSelectedCardType] = useState<string>('all');
 
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        setLoading(true);
-        const detailedCards = await gameStateService.getDetailedPlayerCards();
-        setCards(detailedCards);
-      } catch (err: any) {
-        console.error(err);
-        setError(err.title || 'Не удалось загрузить коллекцию.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data, loading, error } = useQuery<{ getCollectionDisplayData: CollectionCard[] }>(GET_COLLECTION_DISPLAY_DATA);
+  const cards = data?.getCollectionDisplayData || [];
 
-    fetchCards();
-  }, []);
+  // Преобразуем данные для CardGrid
+  const gridCards = cards.map(card => ({
+    id: Number(card.id),
+    cardId: Number(card.cardId),
+    name: card.name,
+    imageUrl: card.previewUrls[0] || '',
+    cardTypeId: Number(card.cardTypeId),
+    rarity: 'common' as const, // TODO: преобразовать rarityId в строку (common/rare/epic/legendary)
+    quantity: card.quantity,
+    level: card.level,
+    playerId: '',
+    obtainedAt: '',
+  }));
 
   return (
     <Page back={true}>
@@ -74,17 +72,14 @@ export const CollectionPage: FC = () => {
         />
 
         {loading && <p>Загрузка...</p>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        
+        {error && <p style={{ color: 'red' }}>{error.message}</p>}
         {!loading && !error && (
             <CardGrid 
-              cards={cards} 
+              cards={gridCards} 
               onCardClick={(cardId) => navigate(`/collection/player-card/${cardId}`)} 
             />
         )}
-
       </div>
-
     </Page>
   );
 }

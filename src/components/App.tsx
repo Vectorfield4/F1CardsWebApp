@@ -7,7 +7,6 @@ import { routes } from '@/navigation/routes.tsx';
 import { BottomNav } from './BottomNav/BottomNav';
 import { Header } from './Header/Header';
 import { ProtectedRoute } from '@/navigation/ProtectedRoute';
-import { LoginPage } from '@/pages/LoginPage/LoginPage';
 import { authService } from '@/services/authService';
 
 export function App() {
@@ -51,19 +50,14 @@ export function App() {
       <HashRouter>
         <Header />
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
           <Route element={<ProtectedRoute />}>
-            {routes
-              .filter((route) => route.path !== '/login')
-              .map((route) => (
-                <Route key={route.path} path={route.path} element={<route.Component />} />
-              ))}
+            {routes.map((route) => (
+              <Route key={route.path} path={route.path} element={<route.Component />} />
+            ))}
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-        <div style={{ paddingBottom: '75px' }}>
-          <BottomNav />
-        </div>
+        <BottomNav />
       </HashRouter>
     </AppRoot>
   );

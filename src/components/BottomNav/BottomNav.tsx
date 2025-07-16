@@ -34,18 +34,20 @@ export function BottomNav() {
   ];
 
   return (
-    <Tabbar style={{ backgroundColor: '#16171B' }}>
-      {navItems.map((item) => (
-        <Tabbar.Item
-          key={item.id}
-          text={item.label}
-          selected={location.pathname === item.path}
-          onClick={() => navigate(item.path)}
-          style={{ width: '25%', color: 'white' }}
-        >
-          {item.icon}
-        </Tabbar.Item>
-      ))}
-    </Tabbar>
+    <div style={{ paddingBottom: '75px' }}>
+      <Tabbar style={{ backgroundColor: '#16171B' }}>
+        {navItems.map((item) => (
+          <Tabbar.Item
+            key={item.id}
+            text={item.label}
+            selected={location.pathname === item.path}
+            onClick={() => navigate(item.path)}
+            style={{ width: '25%', color: 'white' }}
+          >
+            {item.icon}
+          </Tabbar.Item>
+        ))}
+      </Tabbar>
+    </div>
   );
 }
