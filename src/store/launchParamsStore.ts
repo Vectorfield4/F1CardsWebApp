@@ -19,7 +19,7 @@ interface LaunchParamsState {
 }
 
 export const useLaunchParamsStore = create<LaunchParamsState>((set) => {
-  const raw = initDataRaw() ?? "Empty";
+  const raw = initDataRaw();
   const stateRaw = initDataState();
   var headers = import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW 
     ? { 'Authorization': `tma ${import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW}` } 
