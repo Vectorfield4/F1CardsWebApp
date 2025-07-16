@@ -26,12 +26,13 @@ export const useLaunchParamsStore = create<LaunchParamsState>((set) => ({
   headers: {},
   initFromTelegram: () => {
     let raw = initDataRaw();
+    var headers = import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW 
+      ? { 'Authorization': `tma ${import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW}` } 
+      : { 'Authorization': `tma ${raw}` };
+      
     let stateRaw = initDataState();
     let state: InitData | null = null;
-    // Fallback: если нет raw, пробуем из .env
-    if (!raw && import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW) {
-      raw = import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW;
-    }
+    
     // Fallback: если нет state, пробуем распарсить raw
     if ((!stateRaw || !stateRaw.user) && raw) {
       try {
@@ -63,10 +64,11 @@ export const useLaunchParamsStore = create<LaunchParamsState>((set) => ({
         user: stateRaw.user ?? undefined, // user всегда присутствует
       };
     }
+
     set({
       initDataRaw: raw,
       initDataState: state,
-      headers: raw ? { 'Authorization': `tma ${raw}` } : { },
+      headers,
     });
   },
 })); 
