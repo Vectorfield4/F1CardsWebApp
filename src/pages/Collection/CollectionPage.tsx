@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Page } from '@/components/Page';
 
 import { FilterChips, FilterOption } from '@/components/FilterChips/FilterChips';
-import { CollectionHeader } from '@/components/CollectionHeader/CollectionHeader';
+import { CollectionHeader } from '@/pages/Collection/CollectionHeader/CollectionHeader';
 import { useQuery } from '@apollo/client';
 import { GET_COLLECTION_DISPLAY_DATA, CollectionCard } from '@/services/queries';
 import { CardGrid } from './CardGrid/CardGrid';

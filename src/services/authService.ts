@@ -24,13 +24,6 @@ export interface PlayerDetailsDto {
   isBanned: boolean;
 }
 
-export interface LoginResponse {
-  success: boolean;
-  user?: TelegramUserInfo;
-  playerDetails?: PlayerDetailsDto | null;
-  error?: string;
-}
-
 class AuthService {
   private baseUrl: string;
   private currentUser: TelegramUserInfo | null = null;
@@ -105,100 +98,6 @@ class AuthService {
     };
   }
 
-  // Загрузка детальной информации об игроке
-  private async loadPlayerDetails(): Promise<void> {
-    if (!this.currentUser || !this.initData) return;
-
-    try {
-      console.log('📊 Загружаем детали игрока:', this.currentUser.userId);
-      const response = await fetch(`${this.baseUrl}/api/Players/${this.currentUser.userId}`, {
-        method: 'GET',
-        headers: this.getAuthHeaders()
-      });
-
-      if (response.ok) {
-        this.playerDetails = await response.json();
-        localStorage.setItem('playerDetails', JSON.stringify(this.playerDetails));
-      }
-    } catch (error) {
-      console.error('Failed to load player details:', error);
-    }
-  }
-
-  // Восстановление сессии
-  async restoreSession(): Promise<LoginResponse> {
-    const savedInitData = localStorage.getItem('gameInitData');
-    const savedUser = localStorage.getItem('gameUser');
-    const savedPlayerDetails = localStorage.getItem('playerDetails');
-
-    if (!savedInitData || !savedUser) {
-      return { success: false, error: 'Сессия не найдена' };
-    }
-
-    // В режиме разработки доверяем сохраненной сессии без перепроверки
-    if (import.meta.env.DEV) {
-      console.log('🔄 DEV MODE: Восстанавливаем сессию из localStorage без проверки');
-      try {
-        const userData: TelegramUserInfo = JSON.parse(savedUser);
-        this.currentUser = userData;
-        this.initData = savedInitData;
-        this.playerDetails = savedPlayerDetails ? JSON.parse(savedPlayerDetails) : null;
-        
-        console.log('✅ Сессия восстановлена для пользователя:', userData.username);
-        
-        return {
-          success: true,
-          user: userData,
-          playerDetails: this.playerDetails
-        };
-      } catch (error) {
-        console.error('Ошибка парсинга данных сессии из localStorage:', error);
-        this.logout();
-        return { success: false, error: 'Ошибка восстановления сессии из localStorage' };
-      }
-    }
-
-
-    try {
-      // Устанавливаем временно initData для использования в getAuthHeaders
-      this.initData = savedInitData;
-      
-      console.log('🔄 Проверяем валидность сессии...');
-      // Проверяем валидность сессии через повторный логин
-      const response = await fetch(`${this.baseUrl}/api/Players/login`, {
-        method: 'GET',
-        headers: this.getAuthHeaders()
-      });
-
-      if (!response.ok) {
-        // Сессия недействительна, очищаем локальные данные
-        this.logout();
-        return { success: false, error: 'Сессия истекла' };
-      }
-
-      const userData: TelegramUserInfo = await response.json();
-      
-      this.currentUser = userData;
-      this.initData = savedInitData;
-      this.playerDetails = savedPlayerDetails ? JSON.parse(savedPlayerDetails) : null;
-
-      // Обновляем детали игрока, если это необходимо
-      if (userData.isPlayer) {
-        await this.loadPlayerDetails();
-      }
-
-      return {
-        success: true,
-        user: userData,
-        playerDetails: this.playerDetails
-      };
-
-    } catch (error) {
-      console.error('Session restore error:', error);
-      this.logout();
-      return { success: false, error: 'Ошибка восстановления сессии' };
-    }
-  }
 
   // Выход из игры
   logout() {
