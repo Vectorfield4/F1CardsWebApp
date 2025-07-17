@@ -1,13 +1,15 @@
 // ВАЖНО: Все типы и структуры данных для GraphQL-запросов и мутаций должны основываться на src/services/queries.ts
 // Это основной источник правды для типов данных Apollo Client в проекте.
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
-import { useLaunchParamsStore } from '@/store/launchParamsStore';
+import { initDataRaw } from '@telegram-apps/sdk-react';
 
 const graphqlUri = import.meta.env.VITE_BACKEND_API || 'http://localhost:8080/graphql';
 const httpLink = createHttpLink({
   uri: graphqlUri,
   fetch: async (uri, options) => {
-    const { headers } = useLaunchParamsStore.getState();
+    var headers = import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW 
+      ? { 'Authorization': `tma ${import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW}` } 
+      : { 'Authorization': `tma ${initDataRaw()}` };
     
     try {
       return await fetch(uri, { ...options, headers });
