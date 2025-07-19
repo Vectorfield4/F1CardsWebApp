@@ -19,10 +19,13 @@ const httpLink = createHttpLink({
     
     headers['Authorization'] = `tma ${initData}`;
     
+    var response = null;
+
     try {
-      return await fetch(uri, { ...options, headers });
+      response = await fetch(uri, { ...options, headers });
+      return response;
     } catch (err) {
-      setLastError(`Error: ${err}`);
+      setLastError(`GraphQL URI: ${graphqlUri}\nError: ${err}\nResponse: ${response}`);
       throw err;
     }
   },
