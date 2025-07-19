@@ -10,13 +10,11 @@ import { BgBlur100, BgBlur250 } from '@/components/BgBlur';
 import { SpinnerBlock } from '@/components/SpinnerBlock';
 import { ShowcaseSlider } from '@/components/Storefront/ShowcaseSlider';
 import { ErrorMessage } from '@/components/ErrorMessage';
-import { initDataRaw, useSignal } from '@telegram-apps/sdk-react';
 
 export const IndexScreen = () => {
   const navigate = useNavigate();
   const { loading } = useMainScreenStore();
   const { lastError } = lastErrorStore.getState();
-  const initData = useSignal(initDataRaw);
 
   const handleOpenPack = useCallback((packId: string) => {
     alert('Открытие пака будет реализовано позже. packId: ' + packId);
@@ -37,9 +35,7 @@ export const IndexScreen = () => {
   if (lastError) {
     return (
       <div>
-        <pre>{JSON.stringify(initData, null, 2)}</pre>
-        <pre>{lastError}</pre>
-        <ErrorMessage error="Ошибка загрузки данных" onRetry={() => {
+        <ErrorMessage error={lastError} onRetry={() => {
           fetchMainScreenData();
         }} />
       </div>
