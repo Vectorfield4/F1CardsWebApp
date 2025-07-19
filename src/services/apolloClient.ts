@@ -23,7 +23,7 @@ const httpLink = createHttpLink({
       return await fetch(uri, { ...options, headers });
     } catch (err) {
 
-      setLastError(`URL: ${graphqlUri}\nError: ${err}`);
+      setLastError(`URL: ${graphqlUri}`);
       throw err;
     }
   },
