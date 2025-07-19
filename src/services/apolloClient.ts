@@ -4,7 +4,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { initDataRaw } from '@telegram-apps/sdk-react';
 import { lastErrorStore } from '@/store/mainScreenStore';
 
-const graphqlUri = import.meta.env.VITE_BACKEND_API || 'http://localhost:8080/graphql';
+const graphqlUri = (import.meta.env.VITE_BACKEND_API || 'http://localhost:8080') + '/graphql';
 const httpLink = createHttpLink({
   uri: graphqlUri,
   fetch: async (uri, options) => {
@@ -22,7 +22,7 @@ const httpLink = createHttpLink({
     try {
       return await fetch(uri, { ...options, headers });
     } catch (err) {
-      setLastError(`URL: ${graphqlUri}`);
+      setLastError(`Error: ${err}`);
       throw err;
     }
   },
