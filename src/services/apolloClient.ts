@@ -9,20 +9,17 @@ const httpLink = createHttpLink({
   fetch: async (uri, options) => {
     const headers: Record<string, string> = {};
     
-    // Добавляем авторизацию если доступна
-    try {
-      const initData = initDataRaw();
-      if (initData) {
-        headers['Authorization'] = `tma ${initData}`;
-      }
-    } catch (err) {
-      // Игнорируем ошибки получения initData
+    // Жесткая проверка initData - если его нет, падаем
+    const initData = initDataRaw();
+    if (!initData || initData === '') {
+      throw new Error('Пользователь не авторизован');
     }
+    
+    headers['Authorization'] = `tma ${initData}`;
     
     try {
       return await fetch(uri, { ...options, headers });
     } catch (err) {
-      console.error('Request headers:', headers);
       throw err;
     }
   },

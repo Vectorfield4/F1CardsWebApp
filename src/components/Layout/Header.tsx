@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
 import { Text, Image } from '@telegram-apps/telegram-ui';
-import { authService } from '@/services/authService';
+
 import { useSignal } from '@telegram-apps/sdk-react';
 import { initDataState as _initDataState } from '@telegram-apps/sdk-react';
+import { usePlayerStore } from '@/store/playerStore';
 
 const StatItem = ({ value, color, icon }: { value: string, color: string, icon: string }) => (
     <div style={{
@@ -24,27 +24,13 @@ const StatItem = ({ value, color, icon }: { value: string, color: string, icon: 
 
 export const Header = () => {
   const initDataState = useSignal(_initDataState);
-  const [currencies, setCurrencies] = useState({ gold: 0, dust: 0 });
+  const { player } = usePlayerStore();
 
-  useEffect(() => {
-    loadCurrencies();
-    return () => {};
-  }, []);
-
-  const loadCurrencies = () => {
-    const playerDetails = authService.getPlayerDetails();
-    if (playerDetails) {
-      setCurrencies({
-        gold: playerDetails.gold,
-        dust: playerDetails.dust
-      });
-    }
-  };
 
   // Данные пользователя из Telegram
   const userPhotoUrl = initDataState?.user?.photo_url || '';
-  const userName = initDataState?.user?.first_name || 'Username';
-  const userId = initDataState?.user?.id || 'unknown';
+  const userName = player?.username || 'Username';
+  const userId = player?.id || 'unknown';
   const isSpecialUser = userId.toString() === '672728444';
 
   // Форматируем валюты с разделителями тысяч
@@ -54,12 +40,12 @@ export const Header = () => {
 
   const stats = [
     { 
-      value: formatCurrency(currencies.gold), 
+      value: formatCurrency(0), // TODO: player.gold
       color:'#F2C869', 
       icon: 'https://s3.twcstorage.ru/1daee0b6-4b362c06-45a2-4fa0-b1aa-f30cd02cde29/icons/gold.svg' 
     },
     { 
-      value: formatCurrency(currencies.dust), 
+      value: formatCurrency(0), // TODO: player.dust
       color:'white', 
       icon: 'https://s3.twcstorage.ru/1daee0b6-4b362c06-45a2-4fa0-b1aa-f30cd02cde29/icons/dust.svg' 
     }
@@ -79,8 +65,8 @@ export const Header = () => {
           src={userPhotoUrl}
           style={isSpecialUser ? { 
             borderRadius: '50%',
-            border: '3px solid #b9f2ff',
-            boxShadow: '0 0 15px #b9f2ff'
+            border: '3px solid red',
+            boxShadow: '0 0 15px red'
           } : {}}
         />
         <div style={{ display: 'flex', flexDirection: 'column' }}>
