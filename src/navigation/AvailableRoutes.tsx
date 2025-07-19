@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { IndexScreen } from '@/pages/IndexScreen';
 import { CollectionScreen } from '@/pages/CollectionScreen'; 
 import { RouteTemplate } from './RouteTemplate';
+import { InitDataPage } from '@/pages/InitDataPage';
 
 export const routes: RouteTemplate[] = [
   { path: '/', Component: IndexScreen },
@@ -14,7 +15,7 @@ export const routes: RouteTemplate[] = [
   //{ path: '/premium-shop', Component: PremiumShopPage, title: 'Premium Shop' },
   //{ path: '/packs/:packId/purchase-result', Component: PackPurchaseResultScreen, title: 'Pack Purchase Result' },
   //{ path: '/packs/:packId', Component: PackPurchaseScreen, title: 'Pack Purchase' },
-  //{ path: '/shop', Component: InitDataPage, title: 'Shop' },
+  { path: '/shop', Component: InitDataPage, title: 'Shop' },
   //{ path: '/marketplace', Component: InitDataPage, title: 'Marketplace' },
 ];
 
