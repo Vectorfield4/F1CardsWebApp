@@ -20,6 +20,12 @@ const httpLink = createHttpLink({
     try {
       return await fetch(uri, { ...options, headers });
     } catch (err) {
+      // Расширяем ошибку информацией о запросе
+      (err as any).requestInfo = {
+        url: uri.toString(),
+        host: new URL(uri.toString()).host,
+        headers: headers
+      };
       throw err;
     }
   },
