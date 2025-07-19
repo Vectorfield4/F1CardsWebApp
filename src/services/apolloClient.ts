@@ -18,6 +18,8 @@ const httpLink = createHttpLink({
     }
     
     headers['Authorization'] = `tma ${initData}`;
+    headers['Content-Type'] = 'application/json';
+    headers['Accept'] = 'application/json';
     
     var response = null;
 
