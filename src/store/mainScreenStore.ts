@@ -42,7 +42,6 @@ export async function fetchMainScreenData() {
     setLoading(false);
   }
 } 
-
 export const lastErrorStore = create<{
   lastError: string | null;
   setLastError: (error: string) => void;

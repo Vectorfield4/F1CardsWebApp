@@ -2,11 +2,13 @@
 // Это основной источник правды для типов данных Apollo Client в проекте.
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { initDataRaw } from '@telegram-apps/sdk-react';
+import { lastErrorStore } from '@/store/mainScreenStore';
 
 const graphqlUri = import.meta.env.VITE_BACKEND_API || 'http://localhost:8080/graphql';
 const httpLink = createHttpLink({
   uri: graphqlUri,
   fetch: async (uri, options) => {
+    const { setLastError } = lastErrorStore.getState();
     const headers: Record<string, string> = {};
     
     // Жесткая проверка initData - если его нет, падаем
@@ -20,12 +22,8 @@ const httpLink = createHttpLink({
     try {
       return await fetch(uri, { ...options, headers });
     } catch (err) {
-      // Расширяем ошибку информацией о запросе
-      (err as any).requestInfo = {
-        url: uri.toString(),
-        host: new URL(uri.toString()).host,
-        headers: headers
-      };
+
+      setLastError(JSON.stringify({ graphqlUri, err }, null, 2));
       throw err;
     }
   },

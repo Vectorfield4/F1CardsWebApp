@@ -38,7 +38,8 @@ export const IndexScreen = () => {
     return (
       <div>
         <pre>{JSON.stringify(initData, null, 2)}</pre>
-        <ErrorMessage error={lastError} onRetry={() => {
+        <pre>{lastError}</pre>
+        <ErrorMessage error="Ошибка загрузки данных" onRetry={() => {
           fetchMainScreenData();
         }} />
       </div>
