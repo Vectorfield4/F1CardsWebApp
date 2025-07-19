@@ -3,16 +3,17 @@ import { AppRoot } from '@telegram-apps/telegram-ui';
 import { AvailableRoutes } from '@/navigation/AvailableRoutes';
 import { BottomNav } from './Layout/BottomNav';
 import { Header } from './Layout/Header';
-import { useLaunchParamsStore } from '@/store/launchParamsStore';
-import { useEffect } from 'react';
+import { isMiniAppDark, retrieveLaunchParams, useSignal } from '@telegram-apps/sdk-react';
 
 export function App() {
-  const { appearance, platform, initFromTelegram } = useLaunchParamsStore();
-  useEffect(() => {
-    initFromTelegram();
-  }, [initFromTelegram]);
+  const launchParams = retrieveLaunchParams();
+  const { tgWebAppPlatform } = launchParams;
+  const isDark = useSignal(isMiniAppDark);
+
   return (
-    <AppRoot appearance={appearance} platform={platform}>
+    <AppRoot 
+      appearance={isDark ? 'dark' : 'light'} 
+      platform={['macos', 'ios'].includes(tgWebAppPlatform) ? 'ios' : 'base'}>
       <HashRouter>
         <Header />
         <AvailableRoutes />

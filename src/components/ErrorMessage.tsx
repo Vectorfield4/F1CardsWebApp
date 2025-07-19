@@ -1,5 +1,5 @@
+import { initDataRaw } from '@telegram-apps/sdk-react';
 import { Button, Text } from '@telegram-apps/telegram-ui';
-import { useLaunchParamsStore } from '@/store/launchParamsStore';
 
 interface ErrorMessageProps {
   error: string;
@@ -32,13 +32,13 @@ const styles = {
 };
 
 export function ErrorMessage({ error, onRetry }: ErrorMessageProps) {
-  const { headers } = useLaunchParamsStore();
+
   return (
     <div style={styles.container}>
       <Text style={styles.text}>{error}</Text>
-      {headers && (
+      {initDataRaw && (
         <pre style={styles.pre}>
-          {JSON.stringify(headers, null, 2)}
+          {JSON.stringify(initDataRaw, null, 2)}
         </pre>
       )}
       <Button size="s" mode="outline" onClick={onRetry}>
