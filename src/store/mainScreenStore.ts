@@ -18,10 +18,12 @@ export const useMainScreenStore = create<{
 })); 
 
 export async function fetchMainScreenData() {
+  const { setLoading, setError } = useMainScreenStore.getState();
+  const { setLastError } = lastErrorStore.getState();
   const { setPlayer } = usePlayerStore.getState();
   const { setStats } = useStatsStore.getState();
   const { setShowcases } = useShowcaseStore.getState();
-  const { setLoading, setError } = useMainScreenStore.getState();
+  
   
   setLoading(true);
   setError(null);
@@ -34,8 +36,17 @@ export async function fetchMainScreenData() {
     setStats(data.getMainScreenDisplayData.stats);
     setShowcases(data.getMainScreenDisplayData.showcase);
   } catch (e: any) {
+    setLastError(e.message);
     setError(e.message);
   } finally {
     setLoading(false);
   }
 } 
+
+export const lastErrorStore = create<{
+  lastError: string | null;
+  setLastError: (error: string) => void;
+}>((set) => ({
+  lastError: null,
+  setLastError: (error) => set({ lastError: error }),
+})); 

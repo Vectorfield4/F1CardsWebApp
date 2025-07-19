@@ -4,7 +4,7 @@ import { useCallback, useEffect } from 'react';
 import { Screen } from '@/components/Screens/Screen'; 
 import { useNavigate } from 'react-router-dom';
 
-import { fetchMainScreenData, useMainScreenStore } from '@/store/mainScreenStore';
+import { fetchMainScreenData, lastErrorStore, useMainScreenStore } from '@/store/mainScreenStore';
 import { PlayerStatistics } from '@/components/Player/PlayerStatistics';
 import { BgBlur100, BgBlur250 } from '@/components/BgBlur';
 import { SpinnerBlock } from '@/components/SpinnerBlock';
@@ -14,7 +14,8 @@ import { initDataRaw, useSignal } from '@telegram-apps/sdk-react';
 
 export const IndexScreen = () => {
   const navigate = useNavigate();
-  const { loading, error } = useMainScreenStore();
+  const { loading } = useMainScreenStore();
+  const { lastError } = lastErrorStore.getState();
   const initData = useSignal(initDataRaw);
 
   const handleOpenPack = useCallback((packId: string) => {
@@ -33,11 +34,11 @@ export const IndexScreen = () => {
     return <SpinnerBlock />;
   }
 
-  if (error) {
+  if (lastError) {
     return (
       <div>
         <pre>{JSON.stringify(initData, null, 2)}</pre>
-        <ErrorMessage error={error} onRetry={() => {
+        <ErrorMessage error={lastError} onRetry={() => {
           fetchMainScreenData();
         }} />
       </div>
