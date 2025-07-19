@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Text, Image } from '@telegram-apps/telegram-ui';
 import { authService } from '@/services/authService';
 import { useSignal } from '@telegram-apps/sdk-react';
-import { initDataState as _initDataState, initDataRaw as _initDataRaw } from '@telegram-apps/sdk-react';
+import { initDataState as _initDataState } from '@telegram-apps/sdk-react';
 
 const StatItem = ({ value, color, icon }: { value: string, color: string, icon: string }) => (
     <div style={{
@@ -24,7 +24,6 @@ const StatItem = ({ value, color, icon }: { value: string, color: string, icon: 
 
 export const Header = () => {
   const initDataState = useSignal(_initDataState);
-  const initDataRaw = useSignal(_initDataRaw);
   const [currencies, setCurrencies] = useState({ gold: 0, dust: 0 });
 
   useEffect(() => {
