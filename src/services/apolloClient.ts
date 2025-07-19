@@ -24,7 +24,7 @@ const httpLink = createHttpLink({
     var response = null;
 
     try {
-      response = await fetch(uri, { ...options, headers });
+      response = await fetch(uri, { ...options, headers }).then(res => res.json());
       return response;
     } catch (err) {
       setLastError(`GraphQL URI: ${graphqlUri}\nError: ${err}\nResponse: ${response}`);
