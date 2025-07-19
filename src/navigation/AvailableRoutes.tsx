@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { IndexScreen } from '@/pages/IndexScreen';
 import { CollectionScreen } from '@/pages/CollectionScreen'; 
 import { RouteTemplate } from './RouteTemplate';
@@ -27,6 +27,8 @@ export const AvailableRoutes = () => <Routes>
       element={<route.Component />} 
     />
   ))}
+  {/* Редирект на главную для всех несуществующих маршрутов */}
+  <Route path="*" element={<Navigate to="/" replace />} />
 </Routes>
 
 
