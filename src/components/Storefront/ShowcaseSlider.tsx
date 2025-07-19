@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useShowcaseStore } from '@/store/showcaseStore';
 import { ArrowButton } from '@/components/ArrowButton';
 import { ShowcaseImage } from './ShowcaseImage';
@@ -35,6 +35,11 @@ const styles = {
 export const ShowcaseSlider = ({ onOpenPack, onBuyPack }: ShowcaseSliderProps) => {
   const { showcases } = useShowcaseStore();
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Сбрасываем индекс при изменении данных
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [showcases.length]);
 
   if (!showcases.length)
     return <StorefrontClosed />;

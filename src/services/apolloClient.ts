@@ -7,9 +7,17 @@ const graphqlUri = import.meta.env.VITE_BACKEND_API || 'http://localhost:8080/gr
 const httpLink = createHttpLink({
   uri: graphqlUri,
   fetch: async (uri, options) => {
-    var headers = import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW 
-      ? { 'Authorization': `tma ${import.meta.env.VITE_TELEGRAM_INIT_DATA_RAW}` } 
-      : { 'Authorization': `tma ${initDataRaw()}` };
+    const headers: Record<string, string> = {};
+    
+    // Добавляем авторизацию если доступна
+    try {
+      const initData = initDataRaw();
+      if (initData) {
+        headers['Authorization'] = `tma ${initData}`;
+      }
+    } catch (err) {
+      // Игнорируем ошибки получения initData
+    }
     
     try {
       return await fetch(uri, { ...options, headers });

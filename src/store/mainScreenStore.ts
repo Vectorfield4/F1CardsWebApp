@@ -4,7 +4,6 @@ import { GET_MAIN_SCREEN_DISPLAY_DATA, MainScreenDisplayData } from '@/services/
 import { usePlayerStore } from './playerStore';
 import { useStatsStore } from './statsStore';
 import { useShowcaseStore } from './showcaseStore';
-import { initDataRaw as _initDataRaw, useSignal } from '@telegram-apps/sdk-react';
 
 export const useMainScreenStore = create<{
   loading: boolean;
@@ -16,9 +15,6 @@ export const useMainScreenStore = create<{
   error: null,
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
-  fetchMainScreenData: async () => {
-    await fetchMainScreenData();
-  },
 })); 
 
 export async function fetchMainScreenData() {
@@ -26,13 +22,13 @@ export async function fetchMainScreenData() {
   const { setStats } = useStatsStore.getState();
   const { setShowcases } = useShowcaseStore.getState();
   const { setLoading, setError } = useMainScreenStore.getState();
-  const initDataRaw = useSignal(_initDataRaw);
+  
   setLoading(true);
   setError(null);
+  
   try {
     const { data } = await apolloClient.query<{ getMainScreenDisplayData: MainScreenDisplayData }>({
       query: GET_MAIN_SCREEN_DISPLAY_DATA,
-      context: { headers: {'Authorization': `tma ${initDataRaw}`} }
     });
     setPlayer(data.getMainScreenDisplayData.player);
     setStats(data.getMainScreenDisplayData.stats);
