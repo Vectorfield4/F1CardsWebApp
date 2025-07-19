@@ -1,8 +1,7 @@
-import { initDataRaw } from '@telegram-apps/sdk-react';
+import { lastErrorStore } from '@/store/mainScreenStore';
 import { Button, Text } from '@telegram-apps/telegram-ui';
 
 interface ErrorMessageProps {
-  error: string;
   onRetry: () => void;
 }
 
@@ -20,27 +19,15 @@ const styles = {
   text: {
     color: 'white',
     flex: 1,
-  },
-  pre: {
-    color: '#fff',
-    background: '#222',
-    borderRadius: 4,
-    padding: 8,
-    fontSize: 12,
-    margin: 0,
-  },
+  }
 };
 
-export function ErrorMessage({ error, onRetry }: ErrorMessageProps) {
-
+export function ErrorMessage({ onRetry }: ErrorMessageProps) {
+  const { lastError } = lastErrorStore.getState();
   return (
     <div style={styles.container}>
-      <Text style={styles.text}>{error}</Text>
-      {initDataRaw && (
-        <pre style={styles.pre}>
-          {JSON.stringify(initDataRaw, null, 2)}
-        </pre>
-      )}
+      <Text style={styles.text}>{lastError}</Text>
+
       <Button size="s" mode="outline" onClick={onRetry}>
         Повторить 
       </Button>

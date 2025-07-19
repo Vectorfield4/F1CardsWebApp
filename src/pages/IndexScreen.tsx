@@ -3,7 +3,6 @@
 import { useCallback, useEffect } from 'react';
 import { Screen } from '@/components/Screens/Screen'; 
 import { useNavigate } from 'react-router-dom';
-
 import { fetchMainScreenData, lastErrorStore, useMainScreenStore } from '@/store/mainScreenStore';
 import { PlayerStatistics } from '@/components/Player/PlayerStatistics';
 import { BgBlur100, BgBlur250 } from '@/components/BgBlur';
@@ -31,11 +30,11 @@ export const IndexScreen = () => {
   if (loading) {
     return <SpinnerBlock />;
   }
-
+  
   if (lastError) {
     return (
       <div>
-        <ErrorMessage error={lastError} onRetry={() => {
+        <ErrorMessage onRetry={() => {
           fetchMainScreenData();
         }} />
       </div>
